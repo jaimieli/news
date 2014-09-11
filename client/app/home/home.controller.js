@@ -36,7 +36,7 @@ angular.module('newsApp')
       });
     };
     this.showSentiments = function(article){
-      $http.post('/api/sentiments/getSentiments', article).success(function(data) {
+       $http.post('/api/sentiments/getSentiments', article).success(function(data) {
         console.log(data);
       });
     };

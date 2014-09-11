@@ -30,8 +30,11 @@
     <div ng-repeat="articleBody in allArticles">
       <h2><a href="{{ articleBody.href }}">{{ articleBody.text }}</a></h2>
       <p>{{ articleBody.body | limitTo:500 }}<p>
+      <button ng-click="showSentiment = true" class="btn-warning">Show Sentiment</button>
+      <h4 ng-show="showSentiment"class="sentimentType">Sentiment: {{ articleBody.sentiment.type }}<h4>
+      <h4 ng-show="showSentiment"class="sentimentScore">Score: {{ articleBody.sentiment.score }}<h4>
     </div>
-<!--     <div ng-repeat="article in articles | orderBy: 'topic'">
+    <!-- <div ng-repeat="article in articles | orderBy: 'topic'">
       <h2>{{ article.title }}</h2>
       <a href="{{article.url}}">Source Link</a>
       <p class="topic">{{ article.topic }}</p>
@@ -39,8 +42,6 @@
       <button ng-click="home.delete(article)" class="btn-danger">Delete</button>
       <button ng-click="home.edit(article)" class="btn-success">Edit</button>
       <button ng-click="home.showEntities(article)" class="btn-warning">Show Entities</button>
-      <button ng-click="home.showSentiments(article)" class="btn-warning">Show Sentiments</button>
-      <button ng-click="home.showText(article)" class="btn-warning">Show Text</button>
       <button ng-click="home.showAuthor(article)" class="btn-warning">Show Author</button>
     </div> -->
   <div>

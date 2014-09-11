@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var util = require('util');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('daca9d2d07da11c0a9e7bd1cba99e590b8e6b387');
+var alchemy = new AlchemyAPI('292dd0f8f636420d89276c2ae42759faecdc61a9');
 var request = require('request');
 var async = require('async');
 
@@ -65,7 +65,6 @@ exports.showArticles = function(req, res) {
       alchemy.text(article.href, {}, function(err, response){
         if(err) throw err;
         article.body = response.text;
-        console.log(urlArr);
         callback();
       })
     }, function(err){
@@ -74,17 +73,31 @@ exports.showArticles = function(req, res) {
     })
   };
 
+  var getSentiment = function(done) {
+    async.each(urlArr, function(article, callback) {
+      alchemy.sentiment(article.href, {}, function(err, response){
+        if(err) throw err;
+        article.sentiment = response.docSentiment;
+        callback();
+      })
+    }, function(err){
+      if(err) throw err;
+      done(null, "done doing sentiment");
+    })
+  };
+
   var doneTasks = function(err, results) {
     if (err) throw err;
-    console.log(results);
+    // console.log(urlArr);
     res.send(urlArr);
   };
-  async.series([kimono, mapToUrl, getAlchemy], doneTasks);
+
+  async.series([kimono, mapToUrl, getAlchemy, getSentiment], doneTasks);
 };
 
 
 exports.showText = function(req, res) {
-  var url = req.body.url.toString()
+  var url = req.body.href
   alchemy.text(url, {}, function(err, response){
     if(err) throw err;
     text = response.text;
@@ -107,6 +120,7 @@ exports.showAuthor = function(req, res) {
 };
 
 exports.showEntity = function(req, res) {
+
   var url = req.body.url.toString()
   alchemy.entities(url, {}, function(err, response){
     if(err) throw err;
@@ -117,10 +131,12 @@ exports.showEntity = function(req, res) {
 };
 
 exports.showSentiment = function(req, res) {
-  var url = req.body.url.toString()
+  console.log(req.body.href)
+  var url = req.body.href
   alchemy.sentiment(url, {}, function(err, response){
     if(err) throw err;
     sentiment = response.docSentiment;
+    console.log(sentiment);
     return res.send(sentiment);
   })
 };
