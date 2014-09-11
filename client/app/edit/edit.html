@@ -1,0 +1,25 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="col-md-12">
+      <form role="form" class="edit-form" name="editsForm" ng-submit="edit.submit()">
+        <div class="form-group">
+          <label>Title</label>
+          <input class="form-control" ng-model="obj.title"></input>
+        </div>
+        <div class="form-group">
+          <label>Url</label>
+          <input class="form-control" ng-model="obj.url"></input>
+        </div>
+        <div class="form-group">
+          <label>Topic</label>
+          <input class="form-control" ng-model="obj.topic"></input>
+        </div>
+        <div class="form-group">
+          <label>Article Text</label>
+          <textarea class="form-control" ng-model="obj.body" rows="10"></textarea>
+        </div>
+        <button class="btn-primary">Update</button>
+      </form>
+  </div>
+</div>

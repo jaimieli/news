@@ -1,0 +1,60 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<!-- <div class="container">
+  <div class="col-md-12">
+    <form role="form" class="article-form" name="articlesForm" ng-submit="home.submit()">
+      <h1>Submit an Article</h1>
+      <div class="form-group">
+        <label>Title</label>
+        <input class="form-control" ng-model="home.newArticle.title"></input>
+      </div>
+      <div class="form-group">
+        <label>Url</label>
+        <input class="form-control" ng-model="home.newArticle.url"></input>
+      </div>
+      <div class="form-group">
+        <label>Topic</label>
+        <input class="form-control" ng-model="home.newArticle.topic"></input>
+      </div>
+      <div class="form-group">
+        <label>Article Text</label>
+        <textarea class="form-control" ng-model="home.newArticle.body" rows="10"></textarea>
+      </div>
+      <button class="btn-primary">Submit</button>
+    </form>
+  </div>
+</div> -->
+
+<div class="container">
+  <div class="col-md-12">
+    <h1>News Feed</h1>
+    <div ng-repeat="articleBody in allArticles">
+      <h2><a href="{{ articleBody.href }}">{{ articleBody.text }}</a></h2>
+      <p>{{ articleBody.body | limitTo:500 }}<p>
+    </div>
+<!--     <div ng-repeat="article in articles | orderBy: 'topic'">
+      <h2>{{ article.title }}</h2>
+      <a href="{{article.url}}">Source Link</a>
+      <p class="topic">{{ article.topic }}</p>
+      <p>{{ article.body }}</p>
+      <button ng-click="home.delete(article)" class="btn-danger">Delete</button>
+      <button ng-click="home.edit(article)" class="btn-success">Edit</button>
+      <button ng-click="home.showEntities(article)" class="btn-warning">Show Entities</button>
+      <button ng-click="home.showSentiments(article)" class="btn-warning">Show Sentiments</button>
+      <button ng-click="home.showText(article)" class="btn-warning">Show Text</button>
+      <button ng-click="home.showAuthor(article)" class="btn-warning">Show Author</button>
+    </div> -->
+  <div>
+</div>
+
+{{original}}
+
+<div class="container">
+  <footer class="footer">
+    <a href="http://twitter.com/lijaimie"><img src="../../assets/images/twitter-wrap.png" alt="Twitter Logo" class="social-icon"></a>
+    <a href="#"><img src="../../assets/images/facebook-wrap.png" alt="Facebook Logo" class="social-icon"></a>
+    <!-- special syntax is an HTML entity that makes the copyright symbol -->
+    <p>&copy; 2014 Jaimie Li</p>
+  </footer>
+</div>
+
+
