@@ -8,26 +8,54 @@ var AlchemyAPI = require('alchemy-api');
 var alchemy = new AlchemyAPI('292dd0f8f636420d89276c2ae42759faecdc61a9');
 
 exports.getArticle = function(req, res) {
-  var dataJSON,
-      dataArr,
-      urlArr
+  var dataJSON1,
+      dataArr1,
+      dataJSON2,
+      dataArr2,
+      dataJSON3,
+      dataArr3,
+      dataArrColl = [],
+      urlArr;
+
   var topic = req.body.property1.text;
   topic = topic.replace(' ', '+');
   topic.toString();
 
-  var kimono = function(done) {
-    var url = 'https://www.kimonolabs.com/api/46zne256?apikey=XNfUbBx4xGLryTCqJJgkamBOaa3v0wkj&q='+topic;
+  // fox
+  var kimonoFox = function(done) {
     request('https://www.kimonolabs.com/api/46zne256?apikey=XNfUbBx4xGLryTCqJJgkamBOaa3v0wkj&q='+topic, function(err, response, body) {
-      dataJSON = JSON.parse(body);
-      dataArr = dataJSON.results.collection1;
-      done(null, 'done doing kimono');
+      dataJSON1 = JSON.parse(body);
+      dataArr1 = dataJSON1.results.collection1;
+      dataArrColl.push(dataArr1);
+      done(null, 'done doing kimono Fox');
     });
   };
 
-  var mapToUrl = function(done) {
-    urlArr = dataArr.map(function(data){
-      return data.property1;
+  // reuters
+  var kimonoReuters = function(done) {
+    request('https://www.kimonolabs.com/api/eijqesc4?apikey=XNfUbBx4xGLryTCqJJgkamBOaa3v0wkj&blob='+topic, function(err, response, body) {
+      dataJSON2 = JSON.parse(body);
+      dataArr2 = dataJSON2.results.collection1;
+      dataArrColl.push(dataArr2);
+      done(null, 'done doing kimono Reuters');
     });
+  };
+
+  // huffpost
+  var kimonoHuff = function(done) {
+    request('https://www.kimonolabs.com/api/35kicyte?apikey=XNfUbBx4xGLryTCqJJgkamBOaa3v0wkj&kimpathw='+topic, function(err, response, body) {
+      dataJSON3 = JSON.parse(body);
+      dataArr3 = dataJSON3.results.collection1;
+      dataArrColl.push(dataArr3);
+      done(null, 'done doing kimono Huff');
+    });
+  };
+
+
+  var mapToUrl = function(done) {
+    urlArr = dataArrColl.map(function(data){
+        return data[0].property1;
+      });
     done(null, 'done mapping to URL');
   };
 
@@ -56,13 +84,15 @@ exports.getArticle = function(req, res) {
       done(null, "done doing sentiment");
     })
   };
+
   var doneTasks = function(err, results) {
     if (err) throw err;
-    // console.log(urlArr);
-    res.send(urlArr[0]);
+    // res.send(urlArr[0]);
+    res.send(urlArr);
   };
 
-  async.series([kimono, mapToUrl, getAlchemy, getSentiment], doneTasks);
+  // async.series([kimono, mapToUrl, getAlchemy, getSentiment], doneTasks);
+  async.series([kimonoFox, kimonoReuters, kimonoHuff, mapToUrl, getAlchemy, getSentiment], doneTasks);
 };
 
 exports.trends = function(req, res) {

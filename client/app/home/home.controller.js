@@ -12,7 +12,7 @@ angular.module('newsApp')
       console.log(data);
     })
     this.twitter = function() {
-      $http.get('/api/twitters/2442047').success(function(data){
+      $http.get('/api/twitters/2459115').success(function(data){
         console.log(data);
       });
     };
@@ -42,12 +42,13 @@ angular.module('newsApp')
       // console.log(article);
     };
     this.showEntities = function(article) {
+      console.log(article);
       $http.post('/api/sentiments/getEntities', article).success(function(data) {
         console.log(data);
       });
     };
     this.showSentiments = function(article){
-       $http.post('/api/sentiments/getSentiments', article).success(function(data) {
+       $http.post('/api/sentiments/getSentiments?sentiment=1', article).success(function(data) {
         console.log(data);
       });
     };

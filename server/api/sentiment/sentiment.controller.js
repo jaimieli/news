@@ -108,7 +108,7 @@ exports.showText = function(req, res) {
 
 exports.showAuthor = function(req, res) {
   console.log('author');
-  var url = req.body.url.toString()
+  var url = req.body.href.toString()
   console.log(url);
   alchemy.author(url, {}, function(err, response){
     if(err) throw err;
@@ -121,7 +121,7 @@ exports.showAuthor = function(req, res) {
 
 exports.showEntity = function(req, res) {
 
-  var url = req.body.url.toString()
+  var url = req.body.href.toString()
   alchemy.entities(url, {}, function(err, response){
     if(err) throw err;
     console.log(response);
@@ -135,6 +135,7 @@ exports.showSentiment = function(req, res) {
   var url = req.body.href
   alchemy.sentiment(url, {}, function(err, response){
     if(err) throw err;
+    console.log('response:', response);
     sentiment = response.docSentiment;
     console.log(sentiment);
     return res.send(sentiment);

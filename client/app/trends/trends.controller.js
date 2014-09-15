@@ -11,7 +11,7 @@ angular.module('newsApp')
     this.getNews = function(obj) {
       $http.post('/api/gTrends/getArticle', obj).success(function(data){
         $scope.newsData = data;
-        console.log($scope.newsData);
+        console.log(data);
       });
     };
     $http.get('/api/gTrends/getTrends').success(function(data){

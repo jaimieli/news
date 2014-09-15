@@ -35,6 +35,8 @@
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Sentiment</button>
       <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ articleBody.sentiment.type }}<h4>
       <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ articleBody.sentiment.score }}<h4>
+      <button ng-click="home.showEntities(articleBody)" class="btn-warning">Show Entities</button>
+      <button ng-click="home.showSentiments(articleBody)" class="btn-warning">Show Sentiment 2</button>
     </div>
     <!-- <div ng-repeat="article in articles | orderBy: 'topic'">
       <h2>{{ article.title }}</h2>
