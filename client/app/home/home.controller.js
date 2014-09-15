@@ -11,11 +11,22 @@ angular.module('newsApp')
       $scope.allArticles = data;
       console.log(data);
     })
+    this.twitter = function() {
+      $http.get('/api/twitters/2442047').success(function(data){
+        console.log(data);
+      });
+    };
+    this.gTrends = function() {
+      $http.get('/api/gTrends/getTrends').success(function(data){
+        console.log(data);
+      })
+    }
     this.getUrls = function() {
       $http.get('https://www.kimonolabs.com/api/7nwv3q08?apikey=XNfUbBx4xGLryTCqJJgkamBOaa3v0wkj').success(function(data){
         console.log(data);
       })
     };
+
     this.submit = function(){
       if(this.newArticle === '') {
         return;

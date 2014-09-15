@@ -1,0 +1,19 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="col-md-12">
+    <button ng-click="trends.gTrends()">Google Trends</button>
+    <h1>Trending Topics</h1>
+    <div ng-repeat="trend in trendsArr">
+      <h3 ng-click="trends.getNews(trend)"><a>{{ trend.property1.text }}</a></h3>
+      <h5># of searches: {{ trend.property2 }}</h5>
+      <img src="{{trend.property3.src">
+    </div>
+    <div ng-show="newsData">
+      <h2><a href="{{ newsData.href }}">{{ newsData.text }}</a></h2>
+      <p>{{ newsData.body | limitTo:500 }}<p>
+      <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Sentiment</button>
+      <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ newsData.sentiment.type }}<h4>
+      <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ newsData.sentiment.score }}<h4>
+    </div>
+</div>

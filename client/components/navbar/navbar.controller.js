@@ -5,11 +5,13 @@ angular.module('newsApp')
     $scope.menu = [{
       'title': 'Main',
       'link': '/'
-    },
-    {
+      }, {
       'title': 'Home',
       'link': '/home'
-    }
+      },{
+      'title': 'Trends',
+      'link': '/trends'
+      }
     ];
 
     $scope.isCollapsed = true;
