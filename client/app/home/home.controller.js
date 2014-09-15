@@ -48,7 +48,9 @@ angular.module('newsApp')
       });
     };
     this.showSentiments = function(article){
-       $http.post('/api/sentiments/getSentiments?sentiment=1', article).success(function(data) {
+      article.sentiment = 1;
+      console.log(article);
+       $http.post('/api/sentiments/getSentiments', article).success(function(data) {
         console.log(data);
       });
     };

@@ -29,7 +29,8 @@
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",
     "socketio-jwt": "^2.0.2",
-    "twit": "^1.1.18"
+    "twit": "^1.1.18",
+    "wikipedia-js": "0.0.6"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

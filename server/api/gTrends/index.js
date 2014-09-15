@@ -5,6 +5,7 @@ var controller = require('./gTrends.controller');
 
 var router = express.Router();
 
+router.post('/getEntities', controller.showEntity);
 router.post('/getArticle', controller.getArticle);
 router.get('/getTrends', controller.trends);
 router.get('/', controller.index);

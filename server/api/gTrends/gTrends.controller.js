@@ -5,7 +5,8 @@ var Gtrends = require('./gTrends.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('292dd0f8f636420d89276c2ae42759faecdc61a9');
+var alchemy = new AlchemyAPI('daca9d2d07da11c0a9e7bd1cba99e590b8e6b387');
+var wikipedia = require('wikipedia-js');
 
 exports.getArticle = function(req, res) {
   var dataJSON1,
@@ -15,8 +16,9 @@ exports.getArticle = function(req, res) {
       dataJSON3,
       dataArr3,
       dataArrColl = [],
-      urlArr;
-
+      urlArr,
+      context;
+  var query = req.body.property1.text;
   var topic = req.body.property1.text;
   topic = topic.replace(' ', '+');
   topic.toString();
@@ -43,7 +45,7 @@ exports.getArticle = function(req, res) {
 
   // huffpost
   var kimonoHuff = function(done) {
-    request('https://www.kimonolabs.com/api/35kicyte?apikey=XNfUbBx4xGLryTCqJJgkamBOaa3v0wkj&kimpathw='+topic, function(err, response, body) {
+    request('https://www.kimonolabs.com/api/6ops0ryg?apikey=XNfUbBx4xGLryTCqJJgkamBOaa3v0wkj&q='+topic, function(err, response, body) {
       dataJSON3 = JSON.parse(body);
       dataArr3 = dataJSON3.results.collection1;
       dataArrColl.push(dataArr3);
@@ -62,12 +64,12 @@ exports.getArticle = function(req, res) {
   var getAlchemy = function(done) {
     async.each(urlArr, function(article, callback) {
       alchemy.text(article.href, {}, function(err, response){
-        if(err) throw err;
+        if(err) console.log(err);
         article.body = response.text;
         callback();
       })
     }, function(err){
-      if(err) throw err;
+      if(err) console.log(err);
       done(null, "done doing alchemy");
     })
   };
@@ -75,24 +77,61 @@ exports.getArticle = function(req, res) {
   var getSentiment = function(done) {
     async.each(urlArr, function(article, callback) {
       alchemy.sentiment(article.href, {}, function(err, response){
-        if(err) throw err;
+        if(err) console.log(err);
         article.sentiment = response.docSentiment;
         callback();
       })
     }, function(err){
-      if(err) throw err;
+      if(err) console.log(err);
       done(null, "done doing sentiment");
     })
   };
 
+  var getEntitySentiment = function(done) {
+    async.each(urlArr, function(article, callback) {
+      alchemy.entities(article.href, {sentiment: 1, maxRetrieve: 10}, function(err, response){
+        if(err) console.log(err);
+        article.entities = response.entities;
+        callback();
+      })
+    }, function(err){
+      if(err) console.log(err);
+      done(null, "done doing entity sentiment");
+    })
+  };
+
+  var getWiki = function(done) {
+    var options = {query: query, 'format': 'html', summaryOnly: true};
+    wikipedia.searchArticle(options, function(err, htmlWikiText) {
+      if(err) console.log(err);
+      if (htmlWikiText === null) {
+        htmlWikiText = "Not available";
+      }
+      urlArr.push({context: htmlWikiText});
+      urlArr.push({topic: query});
+      done(null, "done doing wiki");
+    })
+  };
+
   var doneTasks = function(err, results) {
-    if (err) throw err;
+    if(err) console.log(err);
+    console.log(results);
     // res.send(urlArr[0]);
     res.send(urlArr);
   };
 
-  // async.series([kimono, mapToUrl, getAlchemy, getSentiment], doneTasks);
-  async.series([kimonoFox, kimonoReuters, kimonoHuff, mapToUrl, getAlchemy, getSentiment], doneTasks);
+  async.series([kimonoFox, kimonoReuters, kimonoHuff, mapToUrl, getAlchemy, getSentiment, getEntitySentiment, getWiki], doneTasks);
+};
+
+exports.showEntity = function(req, res) {
+  var url = req.body.href.toString();
+  var entities;
+  alchemy.entities(url, {sentiment: 1, maxRetrieve: 10}, function(err, response){
+    if(err) console.log(err);
+    console.log(response);
+    entities = response.entities;
+    return res.send(entities);
+  })
 };
 
 exports.trends = function(req, res) {
@@ -107,7 +146,7 @@ exports.trends = function(req, res) {
     });
   };
   var doneTasks = function(err, results) {
-    if (err) throw err;
+    if(err) console.log(err);
     // console.log(urlArr);
     res.send(dataArr);
   };

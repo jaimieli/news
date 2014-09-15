@@ -32,11 +32,10 @@
     <div ng-repeat="articleBody in allArticles">
       <h2><a href="{{ articleBody.href }}">{{ articleBody.text }}</a></h2>
       <p>{{ articleBody.body | limitTo:500 }}<p>
-      <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Sentiment</button>
+      <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Overall Sentiment</button>
       <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ articleBody.sentiment.type }}<h4>
       <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ articleBody.sentiment.score }}<h4>
-      <button ng-click="home.showEntities(articleBody)" class="btn-warning">Show Entities</button>
-      <button ng-click="home.showSentiments(articleBody)" class="btn-warning">Show Sentiment 2</button>
+      <button ng-click="home.showEntities(articleBody)" class="btn-default">Get Entities</button>
     </div>
     <!-- <div ng-repeat="article in articles | orderBy: 'topic'">
       <h2>{{ article.title }}</h2>

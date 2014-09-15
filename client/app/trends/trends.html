@@ -7,15 +7,21 @@
     <div ng-repeat="trend in trendsArr">
       <h3 ng-click="trends.getNews(trend)"><a>{{ trend.property1.text }}</a></h3>
       <h5># of searches: {{ trend.property2 }}</h5>
-      <img src="{{trend.property3.src">
+      <img src="{{trend.property3.src}}">
     </div>
     <div ng-show="newsData">
-      <div ng-repeat="outlet in newsData">
+<!--       <h1>Topic: {{ newsData[4].topic }}</h1> -->
+<!--       <p>Context: {{ newsData[3].context }}</p> -->
+      <div ng-repeat="outlet in newsData | limitTo: 3">
         <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
         <p>{{ outlet.body | limitTo:500 }}<p>
-        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Sentiment</button>
-        <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ outlet.sentiment.type }}<h4>
-        <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ outlet.sentiment.score }}<h4>
+        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Overall Sentiment</button>
+        <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ outlet.sentiment.type }}</h4>
+        <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ outlet.sentiment.score }}</h4>
+        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntity">Show Entity Sentiment</button>
+        <div ng-show="showEntity === true" ng-repeat="entity in outlet.entities">Entity: {{ entity.text }}</div>
+        <div ng-show="showEntity === true" ng-repeat="entity in outlet.entities">Sentiment: {{ entity.sentiment.type }}</div>
+        <div ng-show="showEntity === true" ng-repeat="entity in outlet.entities">Score: {{ entity.sentiment.score }}</div>
       </div>
     </div>
 </div>

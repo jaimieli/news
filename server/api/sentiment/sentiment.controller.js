@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var util = require('util');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('292dd0f8f636420d89276c2ae42759faecdc61a9');
+var alchemy = new AlchemyAPI('daca9d2d07da11c0a9e7bd1cba99e590b8e6b387');
 var request = require('request');
 var async = require('async');
 
@@ -63,12 +63,12 @@ exports.showArticles = function(req, res) {
   var getAlchemy = function(done) {
     async.each(urlArr, function(article, callback) {
       alchemy.text(article.href, {}, function(err, response){
-        if(err) throw err;
+        if(err) console.log(err);
         article.body = response.text;
         callback();
       })
     }, function(err){
-      if(err) throw err;
+      if(err) console.log(err);
       done(null, "done doing alchemy");
     })
   };
@@ -76,18 +76,18 @@ exports.showArticles = function(req, res) {
   var getSentiment = function(done) {
     async.each(urlArr, function(article, callback) {
       alchemy.sentiment(article.href, {}, function(err, response){
-        if(err) throw err;
+        if(err)console.log(err);
         article.sentiment = response.docSentiment;
         callback();
       })
     }, function(err){
-      if(err) throw err;
+      if(err) console.log(err);
       done(null, "done doing sentiment");
     })
   };
 
   var doneTasks = function(err, results) {
-    if (err) throw err;
+    if (err) console.log(err);
     // console.log(urlArr);
     res.send(urlArr);
   };
@@ -99,7 +99,7 @@ exports.showArticles = function(req, res) {
 exports.showText = function(req, res) {
   var url = req.body.href
   alchemy.text(url, {}, function(err, response){
-    if(err) throw err;
+    if(err) console.log(err);
     text = response.text;
     console.log(text);
     return res.send(text);
@@ -111,7 +111,7 @@ exports.showAuthor = function(req, res) {
   var url = req.body.href.toString()
   console.log(url);
   alchemy.author(url, {}, function(err, response){
-    if(err) throw err;
+    if(err) console.log(err);
     console.log(response);
     author = response.author;
     console.log(author);
@@ -119,11 +119,12 @@ exports.showAuthor = function(req, res) {
   })
 };
 
+// shows entity sentiment
 exports.showEntity = function(req, res) {
 
   var url = req.body.href.toString()
-  alchemy.entities(url, {}, function(err, response){
-    if(err) throw err;
+  alchemy.entities(url, {sentiment: 1, maxRetrieve: 10}, function(err, response){
+    if(err) console.log(err);
     console.log(response);
     entities = response.entities;
     return res.send(entities);
@@ -134,7 +135,7 @@ exports.showSentiment = function(req, res) {
   console.log(req.body.href)
   var url = req.body.href
   alchemy.sentiment(url, {}, function(err, response){
-    if(err) throw err;
+    if(err) console.log(err);
     console.log('response:', response);
     sentiment = response.docSentiment;
     console.log(sentiment);

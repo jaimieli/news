@@ -14,6 +14,12 @@ angular.module('newsApp')
         console.log(data);
       });
     };
+    this.showEntities = function(article) {
+      console.log(article);
+      $http.post('/api/gTrends/getEntities', article).success(function(data) {
+        console.log(data);
+      });
+    };
     $http.get('/api/gTrends/getTrends').success(function(data){
       $scope.trendsArr = data;
       console.log($scope.trendsArr);
