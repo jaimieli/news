@@ -11,6 +11,9 @@ angular.module('newsApp')
       },{
       'title': 'Trends',
       'link': '/trends'
+      }, {
+      'title': 'Google News',
+      'link': '/allGoogle'
       }
     ];
 

@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/gNew/gNew.socket').register(socket);
   require('../api/sentiment/sentiment.socket').register(socket);
   require('../api/article/article.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);

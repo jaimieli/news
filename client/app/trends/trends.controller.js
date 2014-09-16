@@ -25,3 +25,13 @@ angular.module('newsApp')
       console.log($scope.trendsArr);
     });
   });
+  // .directive('wiki', function() {
+  //   return {
+  //     scope: false,
+  //     restrict: 'E',
+  //     template: '<p>Context:</p>',
+  //     link: function(scope, element, attrs){
+  //       element.append(scope.newsData[3].context);
+  //     }
+  //   };
+  // });

@@ -1,0 +1,28 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="col-md-12">
+    <h1>Trending Topics</h1>
+    <div ng-repeat="trend in trendsArr">
+      <h3 ng-click="google.getNews(trend)"><a>{{ trend.property1.text }}</a></h3>
+      <h5># of searches: {{ trend.property2 }}</h5>
+      <p><a href="{{trend.property1.href}}">Google Results</a></p>
+      <img src="{{trend.property3.src}}">
+    </div>
+    <div ng-if="newsData">
+    <h1>Topic: {{ newsData[11].topic }}</h1>
+    <wiki></wiki>
+    <bars-chart chart-data="myData"></bars-chart>
+      <div ng-repeat="outlet in newsData | limitTo:10">
+        <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
+        <p>{{ outlet.body | limitTo:500 }}<p>
+        <p>{{ outlet.href }}<p>
+        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Overall Sentiment</button>
+        <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ outlet.docSentiment.type }}</h4>
+        <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ outlet.docSentiment.score }}</h4>
+        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntity">Show Entity Sentiment</button>
+        <div ng-show="showEntity === true" ng-repeat="entity in outlet.entitySentiment">{{ entity }}</div>
+      </div>
+    </div>
+  </div>
+</div>

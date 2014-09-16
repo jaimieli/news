@@ -7,12 +7,14 @@
     <div ng-repeat="trend in trendsArr">
       <h3 ng-click="trends.getNews(trend)"><a>{{ trend.property1.text }}</a></h3>
       <h5># of searches: {{ trend.property2 }}</h5>
+      <p><a href="{{trend.property1.href}}">Google Results</a></p>
       <img src="{{trend.property3.src}}">
     </div>
-    <div ng-show="newsData">
-<!--       <h1>Topic: {{ newsData[4].topic }}</h1> -->
-<!--       <p>Context: {{ newsData[3].context }}</p> -->
-      <div ng-repeat="outlet in newsData | limitTo: 3">
+    <div ng-if="newsData">
+    <h1>Topic: {{ newsData[4].topic }}</h1>
+    <wiki></wiki>
+<!--     <p>{{ newsData[3].context }}</p> -->
+      <div ng-repeat="outlet in newsData | limitTo:3">
         <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
         <p>{{ outlet.body | limitTo:500 }}<p>
         <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Overall Sentiment</button>
