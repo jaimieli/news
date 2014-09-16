@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('a1fba049c2c8165b04e481a61b9ce0bf8ae56eb2');
+var alchemy = new AlchemyAPI('647c071a6b4444210a62e932970dd68912b5064b');
 var wikipedia = require('wikipedia-js');
 
 exports.getArticle = function(req, res) {
@@ -17,7 +17,8 @@ exports.getArticle = function(req, res) {
       dataArr3,
       dataArrColl = [],
       cleanData,
-      context;
+      context,
+      dataObj = {};
   var query = req.body.property1.text;
   var topic = req.body.property1.text;
   topic = topic.replace(' ', '+');
@@ -66,6 +67,7 @@ exports.getArticle = function(req, res) {
       })
     };
     var getEntitySentiment = function(callback) {
+      dataObj.sentimentData = {};
       async.each(cleanData, function(article, callback) {
         alchemy.entities(article.href, {sentiment: 1, maxRetrieve: 10}, function(err, response){
           if(err) console.log(err);
@@ -74,10 +76,20 @@ exports.getArticle = function(req, res) {
           article.entities = [];
           article.scores = [];
 
+
           response.entities.forEach(function(el){
             var score = el.sentiment.score || "0";
             var entity = el.text;
             var obj = {};
+            // data cleaning
+            var sentimentObj = {};
+            sentimentObj["score"]= score;
+            sentimentObj["source"]= article.href;
+            if (!dataObj.sentimentData[entity]) {
+              dataObj.sentimentData[entity] = [];
+            }
+            dataObj.sentimentData[entity].push(sentimentObj);
+            // end of data cleaning
             obj[entity] = Number(score);
             article.entitySentiment.push(obj);
             article.entities.push(entity);
@@ -118,7 +130,8 @@ exports.getArticle = function(req, res) {
     if(err) console.log(err);
     console.log(results);
     // res.send(cleanData[0]);
-    res.send(cleanData);
+    dataObj.cleanData = cleanData;
+    res.send(dataObj);
   };
 
   // async.series([kimonoFox, kimonoReuters, kimonoHuff, mapToClean, getArticleText, getSentiment, getEntitySentiment, getWiki], doneTasks);
