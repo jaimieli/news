@@ -2,7 +2,6 @@
 
 angular.module('newsApp')
   .controller('AllgoogleCtrl', function ($scope, $http) {
-    $scope.newsData = [];
     $scope.myData = [10,20,30,40,60, 80, 20, 50];
     $scope.exampleData = [
       {"key": "Group 0",
@@ -18,6 +17,16 @@ angular.module('newsApp')
         "values":[{"x":0.08977024155251706,"y":-1.4315520281419063,"size":0.6179190273396671},{"x":0.11861503770586883,"y":0.23955359638861132,"size":0.25821112329140306},{"x":-1.0237018995145157,"y":-0.5612582258175013,"size":0.1404807132203132},{"x":-0.9393455408596457,"y":0.6737660860684879,"size":0.9703105506487191},{"x":0.19159941945806783,"y":-0.8725095986814769,"size":0.43511714902706444},{"x":1.6895418516897702,"y":0.32170365030040016,"size":0.8828782043419778},{"x":0.4842324641678769,"y":0.5980015980942737,"size":0.8117240949068218},{"x":-0.011520241595057892,"y":0.1074086719509541,"size":0.35458783572539687},{"x":-0.9232625281509388,"y":-1.376116962711894,"size":0.26924173487350345},{"x":-0.3926740679388665,"y":-0.0295550635718949,"size":0.2515628270339221}]
       }
     ];
+    $scope.yFunction = function() {
+      return function(d) {
+        return d.y;
+      };
+    }
+    $scope.xFunction = function() {
+      return function(d) {
+        return d.x;
+      };
+    }
     $scope.chart = null;
     $http.get('/api/gTrends/getTrends').success(function(data){
       $scope.trendsArr = data;
@@ -26,7 +35,23 @@ angular.module('newsApp')
     this.getNews = function(obj) {
       $http.post('/api/gNews/getArticle', obj).success(function(data){
         $scope.newsData = data;
-        console.log(data);
+        // mapping data to display in chart
+        $scope.newsData.display = [];
+        for (var i=0; i<$scope.newsData.sentimentData.length; i++) {
+          var groupObj = {};
+          groupObj['key'] = $scope.newsData.sentimentData[i].entity;
+          groupObj['values'] = [];
+          $scope.newsData.sentimentData[i].sentimentScores.forEach(function(outlet){
+            var sentimentObj = {};
+            sentimentObj['x'] = outlet.score;
+            sentimentObj['y'] = i + 1;
+            sentimentObj['size'] = 0.5;
+            groupObj['values'].push(sentimentObj);
+          })
+          $scope.newsData.display.push(groupObj)
+        }
+        // end of mapping data to display in chart
+        console.log($scope.newsData);
       });
     };
     this.showEntities = function(article) {
@@ -47,20 +72,11 @@ angular.module('newsApp')
     };
   })
   .directive('barsChart', function($parse) {
-    //explicitly creating a directive definition variable
-    //this may look verbose but is good for clarification purposes
-    //in real life you'd want to simply return the object {...}
     return {
-      //We restrict its use to an element
-      //as usually  <bars-chart> is semantically
-      //more understandable
       restrict: 'E',
-      //this is important,
-      //we don't want to overwrite our directive declaration
-      //in the HTML mark-up
       replace: false,
-      //our data source would be an array
-      //passed thru chart-data attribute
+      //our data source is an an array
+      //passed through chart-data attribute
       scope: {
         data: '=chartData'
       },
@@ -82,7 +98,7 @@ angular.module('newsApp')
           .text(function(d) {
             return d + '%';
           });
-        //a little of magic: setting it's width based
+        //set its width based
         //on the data value (d)
         //and text all with a smooth transition
       } // closes link

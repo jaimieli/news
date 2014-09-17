@@ -11,20 +11,24 @@
     </div>
     <bars-chart chart-data="myData"></bars-chart>
     <div ng-if="newsData">
-      <h1>Topic: {{ newsData[11].topic }}</h1>
+      <h1>Topic: {{ newsData.cleanData[11].topic }}</h1>
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
       <div ng-show="showChart === true"class="chartType">
         <nvd3-scatter-chart
-            data="exampleData"
-            id="exampleId"
+            data="newsData.display"
+            id="sentimentComparison"
             width="550"
             height="400"
+            showLegend="true"
+            rightAlignYAxis="true"
             yAxisTickFormat="yAxisTickFormatFunction()"
             xAxisTickFormat="xAxisTickFormatFunction()">
             <svg></svg>
         </nvd3-scatter-chart>
       </div>
-      <wiki></wiki>
+      <div ng-if="newsData.cleanData[10].context!=='Not Available'">
+        <wiki></wiki>
+      </div>
         <div ng-repeat="outlet in newsData.cleanData | limitTo:10">
           <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
           <p>{{ outlet.body | limitTo:500 }}<p>

@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('fd4b9e657d83ed2455f21228009313a4db8a2c75');
+var alchemy = new AlchemyAPI('daca9d2d07da11c0a9e7bd1cba99e590b8e6b387');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -111,7 +111,6 @@ exports.getArticle = function(req, res) {
     async.parallel([getArticleText, getSentiment, getEntitySentiment],
       function(err, results){
       if(err) console.log(err);
-      console.log(dataObj.sentimentData);
       // make an array
       var arr = [];
       // loop over the keys of dataObj.sentimentData
@@ -144,7 +143,7 @@ exports.getArticle = function(req, res) {
     wikipedia.searchArticle(options, function(err, htmlWikiText) {
       if(err) console.log(err);
       if (htmlWikiText === null) {
-        htmlWikiText = "Not available";
+        htmlWikiText = "Not Available";
       }
       cleanData.push({context: htmlWikiText});
       cleanData.push({topic: query});
@@ -154,7 +153,6 @@ exports.getArticle = function(req, res) {
 
   var doneTasks = function(err, results) {
     if(err) console.log(err);
-    console.log(results);
     // res.send(cleanData[0]);
     // dataObj.sentimentData = _.sortBy(dataObj.sentimentData, function(item){
     //   return item.length;
