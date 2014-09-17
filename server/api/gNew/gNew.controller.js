@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('daca9d2d07da11c0a9e7bd1cba99e590b8e6b387');
+var alchemy = new AlchemyAPI('a1fba049c2c8165b04e481a61b9ce0bf8ae56eb2');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -133,7 +133,7 @@ exports.getArticle = function(req, res) {
         return 0;
       });
 
-      dataObj.sentimentData = sortedArr.slice(0,20);
+      dataObj.sentimentData = sortedArr.slice(0,10);
       done(null, "done doing alchemy");
     })
   }

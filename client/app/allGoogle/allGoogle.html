@@ -20,27 +20,25 @@
       showYaxis="false"
       forceX="[-3,3]"
       showLegend="true"
-      transition="1000"
-      yAxisTickFormat="yAxisTickFormatFunction()"
-      xAxisTickFormat="xAxisTickFormatFunction()">
+      transitionDuration="1000"
+      >
       <svg id="chart" width="960" height="500"></svg>
     </nvd3-scatter-chart>
     <div ng-if="newsData">
       <h1>Topic: {{ newsData.cleanData[11].topic }}</h1>
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
-      <div ng-show="showChart === true"class="chartType">
+      <div ng-if="showChart === true"class="chartType">
         <nvd3-scatter-chart
             data="newsData.display"
             id="sentimentComparison"
             width="550"
             height="400"
-            showLegend="true"
-            transition="1000"
             interactive="true"
-            forceX="[-1,1]"
             tooltips="true"
-            yAxisTickFormat="yAxisTickFormatFunction()"
-            xAxisTickFormat="xAxisTickFormatFunction()">
+            showYaxis="false"
+            forceX="[-1,1]"
+            showLegend="true"
+            transitionDuration="1000"
             <svg id="chart" width="960" height="500"></svg>
         </nvd3-scatter-chart>
       </div>
