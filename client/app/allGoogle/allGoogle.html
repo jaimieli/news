@@ -10,28 +10,31 @@
       <img src="{{trend.property3.src}}">
     </div>
     <bars-chart chart-data="myData"></bars-chart>
-    <nvd3-scatter-chart
-        data="exampleData"
-        id="exampleId"
-        width="550"
-        height="400"
-        yAxisTickFormat="yAxisTickFormatFunction()"
-        xAxisTickFormat="xAxisTickFormatFunction()">
-        <svg></svg>
-    </nvd3-scatter-chart>
     <div ng-if="newsData">
-    <h1>Topic: {{ newsData[11].topic }}</h1>
-    <wiki></wiki>
-      <div ng-repeat="outlet in newsData.cleanData | limitTo:10">
-        <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
-        <p>{{ outlet.body | limitTo:500 }}<p>
-        <p>{{ outlet.href }}<p>
-        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Overall Sentiment</button>
-        <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ outlet.docSentiment.type }}</h4>
-        <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ outlet.docSentiment.score }}</h4>
-        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntity">Show Entity Sentiment</button>
-        <div ng-show="showEntity === true" ng-repeat="entity in outlet.entitySentiment">{{ entity }}</div>
+      <h1>Topic: {{ newsData[11].topic }}</h1>
+      <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
+      <div ng-show="showChart === true"class="chartType">
+        <nvd3-scatter-chart
+            data="exampleData"
+            id="exampleId"
+            width="550"
+            height="400"
+            yAxisTickFormat="yAxisTickFormatFunction()"
+            xAxisTickFormat="xAxisTickFormatFunction()">
+            <svg></svg>
+        </nvd3-scatter-chart>
       </div>
-    </div>
-  </div>
-</div>
+      <wiki></wiki>
+        <div ng-repeat="outlet in newsData.cleanData | limitTo:10">
+          <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
+          <p>{{ outlet.body | limitTo:500 }}<p>
+          <p>{{ outlet.href }}<p>
+          <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Overall Sentiment</button>
+          <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ outlet.docSentiment.type }}</h4>
+          <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ outlet.docSentiment.score }}</h4>
+          <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntity">Show Entity Sentiment</button>
+          <div ng-show="showEntity === true" ng-repeat="entity in outlet.entitySentiment">{{ entity }}</div>
+        </div> <!-- ng-repeat outlet -->
+    </div> <!-- ng-if newsData -->
+  </div> <!-- column -->
+</div> <!-- container -->

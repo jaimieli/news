@@ -5,8 +5,9 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('647c071a6b4444210a62e932970dd68912b5064b');
+var alchemy = new AlchemyAPI('fd4b9e657d83ed2455f21228009313a4db8a2c75');
 var wikipedia = require('wikipedia-js');
+var _ = require('underscore');
 
 exports.getArticle = function(req, res) {
   var dataJSON1,
@@ -81,7 +82,8 @@ exports.getArticle = function(req, res) {
             var score = el.sentiment.score || "0";
             var entity = el.text;
             var obj = {};
-            // data cleaning
+
+            // data cleaning --> sentimentData obj
             var sentimentObj = {};
             sentimentObj["score"]= score;
             sentimentObj["source"]= article.href;
@@ -109,6 +111,30 @@ exports.getArticle = function(req, res) {
     async.parallel([getArticleText, getSentiment, getEntitySentiment],
       function(err, results){
       if(err) console.log(err);
+      console.log(dataObj.sentimentData);
+      // make an array
+      var arr = [];
+      // loop over the keys of dataObj.sentimentData
+      for (var key in dataObj.sentimentData){
+        // if (dataObj.hasOwnProperty(key)) {
+        //   console.log("hey i gets to be run");
+          var obj = {};
+          obj.entity = key;
+          obj.sentimentScores = dataObj.sentimentData[key];
+          arr.push(obj);
+      }
+      // sort arr according to the number of sentimentScores
+       var sortedArr = arr.sort(function(a,b){
+        if(a.sentimentScores.length > b.sentimentScores.length) {
+          return -1;
+        }
+        if(a.sentimentScores.length < b.sentimentScores.length) {
+          return 1;
+        }
+        return 0;
+      });
+
+      dataObj.sentimentData = sortedArr.slice(0,20);
       done(null, "done doing alchemy");
     })
   }
@@ -130,6 +156,9 @@ exports.getArticle = function(req, res) {
     if(err) console.log(err);
     console.log(results);
     // res.send(cleanData[0]);
+    // dataObj.sentimentData = _.sortBy(dataObj.sentimentData, function(item){
+    //   return item.length;
+    // })
     dataObj.cleanData = cleanData;
     res.send(dataObj);
   };
