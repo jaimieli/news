@@ -10,6 +10,21 @@
       <img src="{{trend.property3.src}}">
     </div>
     <bars-chart chart-data="myData"></bars-chart>
+    <nvd3-scatter-chart
+      data="exampleData"
+      id="exampleChart"
+      width="550"
+      height="400"
+      interactive="true"
+      tooltips="true"
+      showYaxis="false"
+      forceX="[-3,3]"
+      showLegend="true"
+      transition="1000"
+      yAxisTickFormat="yAxisTickFormatFunction()"
+      xAxisTickFormat="xAxisTickFormatFunction()">
+      <svg id="chart" width="960" height="500"></svg>
+    </nvd3-scatter-chart>
     <div ng-if="newsData">
       <h1>Topic: {{ newsData.cleanData[11].topic }}</h1>
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
@@ -20,10 +35,13 @@
             width="550"
             height="400"
             showLegend="true"
-            rightAlignYAxis="true"
+            transition="1000"
+            interactive="true"
+            forceX="[-1,1]"
+            tooltips="true"
             yAxisTickFormat="yAxisTickFormatFunction()"
             xAxisTickFormat="xAxisTickFormatFunction()">
-            <svg></svg>
+            <svg id="chart" width="960" height="500"></svg>
         </nvd3-scatter-chart>
       </div>
       <div ng-if="newsData.cleanData[10].context!=='Not Available'">

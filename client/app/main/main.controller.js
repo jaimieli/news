@@ -3,6 +3,18 @@
 angular.module('newsApp')
   .controller('MainCtrl', function ($scope, $http, socket) {
     $scope.awesomeThings = [];
+    $scope.myScatterData = [
+                  [ 5,     20 ],
+                  [ 480,   90 ],
+                  [ 250,   50 ],
+                  [ 100,   33 ],
+                  [ 330,   95 ],
+                  [ 410,   12 ],
+                  [ 475,   44 ],
+                  [ 25,    67 ],
+                  [ 85,    21 ],
+                  [ 220,   88 ]
+                  ];
 
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
@@ -24,4 +36,4 @@ angular.module('newsApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     });
-  });
+  })

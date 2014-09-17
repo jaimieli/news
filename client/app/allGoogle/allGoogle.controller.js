@@ -17,6 +17,12 @@ angular.module('newsApp')
         "values":[{"x":0.08977024155251706,"y":-1.4315520281419063,"size":0.6179190273396671},{"x":0.11861503770586883,"y":0.23955359638861132,"size":0.25821112329140306},{"x":-1.0237018995145157,"y":-0.5612582258175013,"size":0.1404807132203132},{"x":-0.9393455408596457,"y":0.6737660860684879,"size":0.9703105506487191},{"x":0.19159941945806783,"y":-0.8725095986814769,"size":0.43511714902706444},{"x":1.6895418516897702,"y":0.32170365030040016,"size":0.8828782043419778},{"x":0.4842324641678769,"y":0.5980015980942737,"size":0.8117240949068218},{"x":-0.011520241595057892,"y":0.1074086719509541,"size":0.35458783572539687},{"x":-0.9232625281509388,"y":-1.376116962711894,"size":0.26924173487350345},{"x":-0.3926740679388665,"y":-0.0295550635718949,"size":0.2515628270339221}]
       }
     ];
+    $scope.tooltipContent = function() {
+      return function(key, x, y, e, graph) {
+            return key;
+        }
+      };
+
     $scope.yFunction = function() {
       return function(d) {
         return d.y;
@@ -71,7 +77,20 @@ angular.module('newsApp')
       }
     };
   })
-  .directive('barsChart', function($parse) {
+  .directive('bubbleChart', function(){
+    return {
+      restrict: 'E',
+      replace: false,
+      scope: {
+        data: '=displayData'
+      },
+      link: function(scope, element, attrs){
+        var chart = d3.select(element[0]);
+
+      }
+    };
+  })
+  .directive('barsChart', function() {
     return {
       restrict: 'E',
       replace: false,
