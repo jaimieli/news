@@ -70,15 +70,17 @@ angular.module('newsApp')
         $scope.newsData.entities = [];
         var counter = 1;
         for (var i=0; i<$scope.newsData.sentimentData.length; i++) {
-          var groupObj = {};
-          groupObj['key'] = $scope.newsData.sentimentData[i].entity;
-          groupObj['values'] = [];
-          // entities data for dropdown
+          // newsData.entities data for dropdown
            var entityObj = {};
           entityObj['id'] = counter;
           entityObj['label'] = $scope.newsData.sentimentData[i].entity;
           $scope.newsData.entities.push(entityObj);
           counter++;
+          // end of newsData.entities data for dropdown
+          // beginning of newsData.display data for charts
+          var groupObj = {};
+          groupObj['key'] = $scope.newsData.sentimentData[i].entity;
+          groupObj['values'] = [];
           $scope.newsData.sentimentData[i].sentimentScores.forEach(function(outlet){
             var sentimentObj = {};
             sentimentObj['x'] = outlet.score;
@@ -90,7 +92,7 @@ angular.module('newsApp')
           })
           $scope.newsData.display.push(groupObj)
         }
-        // end of mapping data to display in chart
+        // end of newsData.display data for charts
         console.log($scope.newsData);
       });
     };

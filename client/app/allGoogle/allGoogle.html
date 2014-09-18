@@ -28,12 +28,18 @@
       <h1>Topic: {{ newsData.topic }}</h1>
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
       <div ng-if="showChart === true"class="chartType">
-          <!-- entity -->
-        <form>
-          <div ng-dropdown-multiselect="" options="newsData.entities" selected-model="entityModel" extra-settings="fullObj" translation-texts="entityCustomTexts"></div>
-          <!-- news source -->
-          <div ng-dropdown-multiselect="" options="newsData.sources" selected-model="sourceModel" extra-settings="fullObj" translation-texts="sourceCustomTexts"></div>
+
+        <form class="form-inline">
+          <div class="form-group">
+            <h4>Filter by Entities</h4>
+            <div ng-dropdown-multiselect="" options="newsData.entities" selected-model="entityModel" extra-settings="fullObj" translation-texts="entityCustomTexts"></div>
+          </div>
+          <div class="form-group">
+            <h4>Filter by News Source</h4>
+            <div ng-dropdown-multiselect="" options="newsData.sources" selected-model="sourceModel" extra-settings="fullObj" translation-texts="sourceCustomTexts"></div>
+          </div>
         </form>
+
         <nvd3-scatter-chart
             data="newsData.display"
             id="sentimentComparison"
