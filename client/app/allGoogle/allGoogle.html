@@ -35,10 +35,8 @@
             <option id="entity" ng-repeat="obj in newsData.sentimentData">{{obj.entity}}</option>
           </select>
           <!-- news source -->
-          <select class="form-control">
-            <label for="source">Source</label>
-            <option id="source" ng-repeat="article in newsData.sources">{{article.href}}</option>
-          </select>
+          <div ng-dropdown-multiselect="" options="newsData.sources" selected-model="sourceModel" extra-settings="fullObj"></div>
+
         </form>
         <nvd3-scatter-chart
             data="newsData.display"

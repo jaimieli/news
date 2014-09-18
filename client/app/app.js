@@ -7,7 +7,8 @@ angular.module('newsApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  'nvd3ChartDirectives'
+  'nvd3ChartDirectives',
+  'angularjs-dropdown-multiselect'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

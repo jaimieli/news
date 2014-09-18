@@ -2,6 +2,8 @@
 
 angular.module('newsApp')
   .controller('AllgoogleCtrl', function ($scope, $http) {
+    $scope.sourceModel = [];
+    $scope.fullObj = {externalIdProp: ''};
     $scope.myData = [10,20,30,40,60, 80, 20, 50];
     $scope.fakeData = [
       {"key": "Group 0",

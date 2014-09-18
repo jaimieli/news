@@ -140,9 +140,12 @@ exports.getArticle = function(req, res) {
 
   var getSources = function(done) {
     dataObj.sources = [];
+    var counter = 1;
     cleanData.forEach(function(el){
       var sourceObj = {};
-      sourceObj['href'] = el.href
+      sourceObj['label'] = el.href;
+      sourceObj['id'] = counter;
+      counter++;
       dataObj.sources.push(sourceObj);
     })
     done(null, "done getting sources");

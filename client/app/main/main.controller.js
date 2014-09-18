@@ -2,6 +2,8 @@
 
 angular.module('newsApp')
   .controller('MainCtrl', function ($scope, $http, socket) {
+    $scope.example1model = [];
+    $scope.example1data = [ {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
     $scope.awesomeThings = [];
     $scope.myScatterData = [
                   [ 5,     20 ],
