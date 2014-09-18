@@ -57,7 +57,76 @@ angular.module('newsApp')
     //         return '<strong>YO!' + y + '</strong>'
     //     }
     // }
+    var sourceFilteredArr = [];
 
+    $scope.clickedSource = function(source){
+      if(typeof $scope.newsData.d3 === 'undefined') {
+        $scope.newsData.d3 = [];
+      }
+      if(source.checked === false || source.checked === undefined){
+        source.checked = true;
+      } else {
+        source.checked = false;
+      }
+
+      // if only only one news source
+      // $scope.newsData.d3 = $scope.newsData.display.map(function(entity){
+      //   var filter = entity.values.filter(function(el){
+      //     return el.source === url;
+      //   })
+      //   entity.values = filter;
+      //   return entity;
+      //   })
+      // end of one news source
+      var sourcesArr = []
+      $scope.newsData.sources.forEach(function(element){
+        if(element.checked===true){
+          sourcesArr.push(element.label);
+        }
+      })
+
+      var newsDataNotFilteredArr = $scope.newsData.display;
+      console.log("this is inside clicksource before filter: ", newsDataNotFilteredArr);
+
+      var newsDataFilteredArr = [];
+
+      for (var i = 0; i < newsDataNotFilteredArr.length; i++) {
+        var unFilteredSrcArr = newsDataNotFilteredArr[i].values;
+        var filteredSrcArr = unFilteredSrcArr.filter(function(src) {
+          if (sourcesArr.indexOf(src.source) !== -1) {
+            return src;
+          }
+        });
+
+        var newObj = {
+          $$hashKey: newsDataNotFilteredArr[i].$$hashKey,
+          checked: newsDataNotFilteredArr[i].checked,
+          key: newsDataNotFilteredArr[i].key,
+          values: filteredSrcArr
+        };
+
+        newsDataFilteredArr.push(newObj);
+      }
+      console.log("after filter newsdatafileredarr", newsDataFilteredArr)
+      sourceFilteredArr = newsDataFilteredArr;
+      console.log("after setting newsdatafiltered to sourcefiltered: ", sourceFilteredArr)
+      // $scope.newsData.d3 = $scope.newsData.display.map(function(entity){
+      //   var filtered;
+      //   var final = [];
+      //   sourcesArr.forEach(function(url){
+      //     // console.log('entity values', entity.values);
+      //     filtered = entity.values.filter(function(el){
+      //       return el.source === url;
+      //     })
+      //     final.push(filtered[0]);
+      //   })
+      //   entity.values = final;
+      //   return entity;
+      //   })
+
+      // console.log("after filter:" ,$scope.newsData.d3);
+
+    }
     $scope.clickedEntity = function(entity) {
       if(typeof $scope.newsData.d3 === 'undefined') {
         $scope.newsData.d3 = [];
@@ -67,9 +136,6 @@ angular.module('newsApp')
         $scope.newsData.d3.push(entity);
       } else {
         entity.checked = false;
-        // $scope.newsData.d3.forEach(function(el){
-        //   if (el.key === entity.key)
-        // })
         var index;
         for(var i = 0; i <$scope.newsData.d3.length; i++){
           if($scope.newsData.d3[i].key===entity.key){
@@ -81,29 +147,10 @@ angular.module('newsApp')
       }
       console.log($scope.newsData);
     }
-
-    $scope.clickedSource = function(source){
-      var url = source.label;
-      if(source.checked === false || source.checked === undefined){
-        source.checked = true;
-      } else {
-        source.checked = false;
-      }
-      // if only only one news source
-      $scope.newsData.d3 = $scope.newsData.display.map(function(entity){
-        var filter = entity.values.filter(function(el){
-          return el.source === url;
-        })
-        entity.values = filter;
-        return entity;
-        })
-      // end of one news source
-      console.log($scope.newsData.d3);
-    }
     $scope.chart = null;
     $http.get('/api/gTrends/getTrends').success(function(data){
       $scope.trendsArr = data;
-      console.log($scope.trendsArr);
+      // console.log($scope.trendsArr);
     });
     this.getNews = function(obj) {
       $http.post('/api/gNews/getArticle', obj).success(function(data){

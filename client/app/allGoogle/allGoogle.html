@@ -27,7 +27,7 @@
     <div ng-if="newsData">
       <h1>Topic: {{ newsData.topic }}</h1>
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
-      <div ng-if="showChart === true"class="chartType">
+      <div ng-if="showChart === true" class="chartType">
 
 <!--         <form class="form-inline">
           <div class="form-group">
@@ -41,6 +41,12 @@
         </form> -->
 
         <form class="form-inline">
+          <h4>Filter by News Source</h4>
+          <div ng-repeat="source in newsData.sources">
+            <label class="checkbox-inline">
+            <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clickedSource(source)">{{source.label}}
+            </label>
+          </div>
           <h4>Filter by Entities</h4>
           <div ng-repeat="entity in newsData.display">
             <label class="checkbox-inline">
@@ -53,19 +59,13 @@
             <input ng-click="clickedEntity(entity)"type="checkbox" id="entity-{{$index}}" value="{{entity.label}}">{{entity.label}}
             </label>
           </div> -->
-          <h4>Filter by News Source</h4>
-          <div ng-repeat="source in newsData.sources">
-            <label class="checkbox-inline">
-            <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clickedSource(source)">{{source.label}}
-            </label>
-          </div>
         </form>
 
         <h5>Selected Entities:</h5>
         <p ng-repeat="entity in entityModel">{{entity}}</p>
         <h5>Selected News Sources:</h5>
         <p ng-repeat="source in sourceModel">{{source}}</p>
-
+        {{newsData.display}}
         <nvd3-scatter-chart
             data="newsData.display"
             id="sentimentComparison"
