@@ -53,19 +53,8 @@
             <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clickedEntity(entity)">{{entity.key}}
             </label>
           </div>
-   <!--        <h4>Filter by Entities</h4>
-          <div ng-repeat="entity in newsData.entities">
-            <label class="checkbox-inline">
-            <input ng-click="clickedEntity(entity)"type="checkbox" id="entity-{{$index}}" value="{{entity.label}}">{{entity.label}}
-            </label>
-          </div> -->
         </form>
 
-        <h5>Selected Entities:</h5>
-        <p ng-repeat="entity in entityModel">{{entity}}</p>
-        <h5>Selected News Sources:</h5>
-        <p ng-repeat="source in sourceModel">{{source}}</p>
-        {{newsData.display}}
         <nvd3-scatter-chart
             data="newsData.display"
             id="sentimentComparison"
@@ -80,7 +69,7 @@
             <svg id="chart" width="960" height="500"></svg>
         </nvd3-scatter-chart>
       </div>
-      <div ng-if="newsData.cleanData[10].context!=='Not Available'">
+      <div ng-if="newsData.wiki!=='Not Available'">
         <wiki></wiki>
       </div>
         <div ng-repeat="outlet in newsData.cleanData | limitTo:10">
