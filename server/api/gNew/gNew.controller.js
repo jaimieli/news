@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('647c071a6b4444210a62e932970dd68912b5064b');
+var alchemy = new AlchemyAPI('1f3073ee65e7aa4f9f744969132335c6a6eaf9f5');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -77,7 +77,6 @@ exports.getArticle = function(req, res) {
           article.entities = [];
           article.scores = [];
 
-
           response.entities.forEach(function(el){
             var score = el.sentiment.score || "0";
             var entity = el.text;
@@ -87,6 +86,7 @@ exports.getArticle = function(req, res) {
             var sentimentObj = {};
             sentimentObj["score"]= score;
             sentimentObj["source"]= article.href;
+            sentimentObj["frequency"] = el.count;
             if (!dataObj.sentimentData[entity]) {
               dataObj.sentimentData[entity] = [];
             }
@@ -138,6 +138,16 @@ exports.getArticle = function(req, res) {
     })
   }
 
+  var getSources = function(done) {
+    dataObj.sources = [];
+    cleanData.forEach(function(el){
+      var sourceObj = {};
+      sourceObj['href'] = el.href
+      dataObj.sources.push(sourceObj);
+    })
+    done(null, "done getting sources");
+  }
+
   var getWiki = function(done) {
     var options = {query: query, 'format': 'html', summaryOnly: true};
     wikipedia.searchArticle(options, function(err, htmlWikiText) {
@@ -145,8 +155,8 @@ exports.getArticle = function(req, res) {
       if (htmlWikiText === null) {
         htmlWikiText = "Not Available";
       }
-      cleanData.push({context: htmlWikiText});
-      cleanData.push({topic: query});
+      dataObj.wiki = htmlWikiText;
+      dataObj.topic = query;
       done(null, "done doing wiki");
     })
   };
@@ -162,7 +172,7 @@ exports.getArticle = function(req, res) {
   };
 
   // async.series([kimonoFox, kimonoReuters, kimonoHuff, mapToClean, getArticleText, getSentiment, getEntitySentiment, getWiki], doneTasks);
-  async.series([kimonoNews, mapToClean, getAlchemy, getWiki], doneTasks);
+  async.series([kimonoNews, mapToClean, getAlchemy, getSources, getWiki], doneTasks);
 };
 
 exports.showEntity = function(req, res) {

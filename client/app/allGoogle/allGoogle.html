@@ -25,17 +25,19 @@
       <svg id="chart" width="960" height="500"></svg>
     </nvd3-scatter-chart>
     <div ng-if="newsData">
-      <h1>Topic: {{ newsData.cleanData[11].topic }}</h1>
+      <h1>Topic: {{ newsData.topic }}</h1>
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
       <div ng-if="showChart === true"class="chartType">
         <form class="form-inline">
           <!-- entity -->
           <select class="form-control">
-            <option ng-repeat="obj in newsData.sentimentData">{{obj.entity}}</option>
+            <label for="entity">Entity</label>
+            <option id="entity" ng-repeat="obj in newsData.sentimentData">{{obj.entity}}</option>
           </select>
           <!-- news source -->
           <select class="form-control">
-            <option ng-repeat="article in newsData.cleanData">{{article.href}}</option>
+            <label for="source">Source</label>
+            <option id="source" ng-repeat="article in newsData.sources">{{article.href}}</option>
           </select>
         </form>
         <nvd3-scatter-chart

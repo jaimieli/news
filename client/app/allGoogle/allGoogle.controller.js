@@ -70,7 +70,9 @@ angular.module('newsApp')
             var sentimentObj = {};
             sentimentObj['x'] = outlet.score;
             sentimentObj['y'] = i + 1;
-            sentimentObj['size'] = 2.5;
+            // set size of circle to the frequency of the word being mentioned
+            sentimentObj['size'] = outlet.frequency;
+            sentimentObj['source'] = outlet.source;
             groupObj['values'].push(sentimentObj);
           })
           $scope.newsData.display.push(groupObj)
@@ -92,7 +94,7 @@ angular.module('newsApp')
       restrict: 'E',
       template: '<p>Context:</p>',
       link: function(scope, element, attrs){
-        element.append(scope.newsData.cleanData[10].context);
+        element.append(scope.newsData.wiki);
       }
     };
   })
