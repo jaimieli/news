@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('daca9d2d07da11c0a9e7bd1cba99e590b8e6b387');
+var alchemy = new AlchemyAPI('a1fba049c2c8165b04e481a61b9ce0bf8ae56eb2');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -138,44 +138,46 @@ exports.getArticle = function(req, res) {
     })
   }
 
-  var getSources = function(done) {
-    dataObj.sources = [];
-    var counter = 1;
-    cleanData.forEach(function(el){
-      var sourceObj = {};
-      sourceObj['label'] = el.href;
-      sourceObj['id'] = counter;
-      counter++;
-      dataObj.sources.push(sourceObj);
-    })
-    done(null, "done getting sources");
-  }
-
-  var getWiki = function(done) {
-    var options = {query: query, 'format': 'html', summaryOnly: true};
-    wikipedia.searchArticle(options, function(err, htmlWikiText) {
+  var getSourcesAndWiki = function(done){
+    var getSources = function(callback) {
+      dataObj.sources = [];
+      var counter = 1;
+      cleanData.forEach(function(el){
+        var sourceObj = {};
+        sourceObj['label'] = el.href;
+        sourceObj['id'] = counter;
+        counter++;
+        dataObj.sources.push(sourceObj);
+      })
+      callback();
+    };
+    var getWiki = function(callback) {
+      var options = {query: query, 'format': 'html', summaryOnly: true};
+      wikipedia.searchArticle(options, function(err, htmlWikiText) {
+        if(err) console.log(err);
+        if (htmlWikiText === null) {
+          htmlWikiText = "Not Available";
+        }
+        dataObj.wiki = htmlWikiText;
+        dataObj.topic = query;
+        callback();
+      })
+    };
+    async.parallel([getSources, getWiki],
+      function(err, results){
       if(err) console.log(err);
-      if (htmlWikiText === null) {
-        htmlWikiText = "Not Available";
-      }
-      dataObj.wiki = htmlWikiText;
-      dataObj.topic = query;
-      done(null, "done doing wiki");
+      done(null, "done doing sources and wiki");
     })
-  };
+  }
 
   var doneTasks = function(err, results) {
     if(err) console.log(err);
-    // res.send(cleanData[0]);
-    // dataObj.sentimentData = _.sortBy(dataObj.sentimentData, function(item){
-    //   return item.length;
-    // })
     dataObj.cleanData = cleanData;
     res.send(dataObj);
   };
 
   // async.series([kimonoFox, kimonoReuters, kimonoHuff, mapToClean, getArticleText, getSentiment, getEntitySentiment, getWiki], doneTasks);
-  async.series([kimonoNews, mapToClean, getAlchemy, getSources, getWiki], doneTasks);
+  async.series([kimonoNews, mapToClean, getAlchemy, getSourcesAndWiki], doneTasks);
 };
 
 exports.showEntity = function(req, res) {

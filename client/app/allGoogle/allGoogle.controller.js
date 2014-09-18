@@ -57,6 +57,49 @@ angular.module('newsApp')
     //         return '<strong>YO!' + y + '</strong>'
     //     }
     // }
+
+    $scope.clickedEntity = function(entity) {
+      if(typeof $scope.newsData.d3 === 'undefined') {
+        $scope.newsData.d3 = [];
+      }
+      if (entity.checked === false){
+        entity.checked = true;
+        $scope.newsData.d3.push(entity);
+      } else {
+        entity.checked = false;
+        // $scope.newsData.d3.forEach(function(el){
+        //   if (el.key === entity.key)
+        // })
+        var index;
+        for(var i = 0; i <$scope.newsData.d3.length; i++){
+          if($scope.newsData.d3[i].key===entity.key){
+            index = i;
+          }
+        }
+        $scope.newsData.d3.splice(index,1);
+        console.log($scope.newsData.d3);
+      }
+      console.log($scope.newsData);
+    }
+
+    $scope.clickedSource = function(source){
+      var url = source.label;
+      if(source.checked === false || source.checked === undefined){
+        source.checked = true;
+      } else {
+        source.checked = false;
+      }
+      // if only only one news source
+      $scope.newsData.d3 = $scope.newsData.display.map(function(entity){
+        var filter = entity.values.filter(function(el){
+          return el.source === url;
+        })
+        entity.values = filter;
+        return entity;
+        })
+      // end of one news source
+      console.log($scope.newsData.d3);
+    }
     $scope.chart = null;
     $http.get('/api/gTrends/getTrends').success(function(data){
       $scope.trendsArr = data;
@@ -81,6 +124,7 @@ angular.module('newsApp')
           var groupObj = {};
           groupObj['key'] = $scope.newsData.sentimentData[i].entity;
           groupObj['values'] = [];
+          groupObj['checked'] = false;
           $scope.newsData.sentimentData[i].sentimentScores.forEach(function(outlet){
             var sentimentObj = {};
             sentimentObj['x'] = outlet.score;

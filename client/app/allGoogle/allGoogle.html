@@ -29,7 +29,7 @@
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
       <div ng-if="showChart === true"class="chartType">
 
-        <form class="form-inline">
+<!--         <form class="form-inline">
           <div class="form-group">
             <h4>Filter by Entities</h4>
             <div ng-dropdown-multiselect="" options="newsData.entities" selected-model="entityModel" extra-settings="fullObj" translation-texts="entityCustomTexts"></div>
@@ -38,12 +38,38 @@
             <h4>Filter by News Source</h4>
             <div ng-dropdown-multiselect="" options="newsData.sources" selected-model="sourceModel" extra-settings="fullObj" translation-texts="sourceCustomTexts"></div>
           </div>
+        </form> -->
+
+        <form class="form-inline">
+          <h4>Filter by Entities</h4>
+          <div ng-repeat="entity in newsData.display">
+            <label class="checkbox-inline">
+            <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clickedEntity(entity)">{{entity.key}}
+            </label>
+          </div>
+   <!--        <h4>Filter by Entities</h4>
+          <div ng-repeat="entity in newsData.entities">
+            <label class="checkbox-inline">
+            <input ng-click="clickedEntity(entity)"type="checkbox" id="entity-{{$index}}" value="{{entity.label}}">{{entity.label}}
+            </label>
+          </div> -->
+          <h4>Filter by News Source</h4>
+          <div ng-repeat="source in newsData.sources">
+            <label class="checkbox-inline">
+            <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clickedSource(source)">{{source.label}}
+            </label>
+          </div>
         </form>
+
+        <h5>Selected Entities:</h5>
+        <p ng-repeat="entity in entityModel">{{entity}}</p>
+        <h5>Selected News Sources:</h5>
+        <p ng-repeat="source in sourceModel">{{source}}</p>
 
         <nvd3-scatter-chart
             data="newsData.display"
             id="sentimentComparison"
-            width="550"
+            width="1000"
             height="400"
             interactive="true"
             tooltips="true"
