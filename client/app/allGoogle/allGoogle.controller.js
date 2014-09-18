@@ -3,6 +3,7 @@
 angular.module('newsApp')
   .controller('AllgoogleCtrl', function ($scope, $http) {
     $scope.sourceModel = [];
+    $scope.entityModel = [];
     $scope.fullObj = {externalIdProp: ''};
     $scope.myData = [10,20,30,40,60, 80, 20, 50];
     $scope.fakeData = [
@@ -64,10 +65,18 @@ angular.module('newsApp')
         $scope.newsData = data;
         // mapping data to display in chart
         $scope.newsData.display = [];
+        $scope.newsData.entities = [];
+        var counter = 1;
         for (var i=0; i<$scope.newsData.sentimentData.length; i++) {
           var groupObj = {};
           groupObj['key'] = $scope.newsData.sentimentData[i].entity;
           groupObj['values'] = [];
+          // entities data for dropdown
+           var entityObj = {};
+          entityObj['id'] = counter;
+          entityObj['label'] = $scope.newsData.sentimentData[i].entity;
+          $scope.newsData.entities.push(entityObj);
+          counter++;
           $scope.newsData.sentimentData[i].sentimentScores.forEach(function(outlet){
             var sentimentObj = {};
             sentimentObj['x'] = outlet.score;
