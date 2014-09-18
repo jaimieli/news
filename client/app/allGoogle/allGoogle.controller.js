@@ -99,16 +99,19 @@ angular.module('newsApp')
         });
 
         var newObj = {
-          $$hashKey: newsDataNotFilteredArr[i].$$hashKey,
           key: newsDataNotFilteredArr[i].key,
-          values: filteredSrcArr
+          values: filteredSrcArr,
+          checked: newsDataNotFilteredArr[i].checked
         };
-
-        newsDataFilteredArr.push(newObj);
+        if (newObj.values.length !== 0){
+          newsDataFilteredArr.push(newObj);
+        }
       }
       console.log("after filter newsdatafileredarr", newsDataFilteredArr)
       sourceFilteredArr = newsDataFilteredArr;
       console.log("after setting newsdatafiltered to sourcefiltered: ", sourceFilteredArr)
+      $scope.sourceFilteredArr = sourceFilteredArr;
+      console.log('after setting tot he scope: ', $scope.sourceFilteredArr);
       // $scope.newsData.d3 = $scope.newsData.display.map(function(entity){
       //   var filtered;
       //   var final = [];
@@ -124,7 +127,6 @@ angular.module('newsApp')
       //   })
 
       // console.log("after filter:" ,$scope.newsData.d3);
-
     }
     $scope.clickedEntity = function(entity) {
       if(typeof $scope.newsData.d3 === 'undefined') {
@@ -132,11 +134,12 @@ angular.module('newsApp')
       }
       if (entity.checked === false){
         entity.checked = true;
-        sourceFilteredArr.forEach(function(el){
-          if(el.key===entity.key){
-            $scope.newsData.d3.push(el);
-          }
-        })
+        $scope.newsData.d3.push(entity);
+        // sourceFilteredArr.forEach(function(el){
+        //   if(el.key===entity.key){
+        //     $scope.newsData.d3.push(el);
+        //   }
+        // })
       } else {
         entity.checked = false;
         var index;

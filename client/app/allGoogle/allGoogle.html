@@ -47,13 +47,18 @@
             <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clickedSource(source)">{{source.label}}
             </label>
           </div>
-          <h4>Filter by Entities</h4>
-          <div ng-repeat="entity in newsData.display">
-            <label class="checkbox-inline">
-            <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clickedEntity(entity)">{{entity.key}}
-            </label>
-          </div>
+        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="true" class="btn-warning" ng-model="showEntityFilter">Next</button>
         </form>
+        <div ng-if="showEntityFilter === true">
+          <form>
+            <h4>Filter by Entities</h4>
+            <div ng-repeat="entity in sourceFilteredArr">
+              <label class="checkbox-inline">
+              <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clickedEntity(entity)">{{entity.key}}
+              </label>
+            </div>
+          </form>
+        </div>
 
         <nvd3-scatter-chart
             data="newsData.display"
