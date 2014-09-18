@@ -5,6 +5,8 @@ angular.module('newsApp')
     $scope.sourceModel = [];
     $scope.entityModel = [];
     $scope.fullObj = {externalIdProp: ''};
+    $scope.entityCustomTexts = {buttonDefaultText: 'Select Entities'}
+    $scope.sourceCustomTexts = {buttonDefaultText: 'Select Sources'}
     $scope.myData = [10,20,30,40,60, 80, 20, 50];
     $scope.fakeData = [
       {"key": "Group 0",
