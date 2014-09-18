@@ -100,7 +100,6 @@ angular.module('newsApp')
 
         var newObj = {
           $$hashKey: newsDataNotFilteredArr[i].$$hashKey,
-          checked: newsDataNotFilteredArr[i].checked,
           key: newsDataNotFilteredArr[i].key,
           values: filteredSrcArr
         };
@@ -133,7 +132,11 @@ angular.module('newsApp')
       }
       if (entity.checked === false){
         entity.checked = true;
-        $scope.newsData.d3.push(entity);
+        sourceFilteredArr.forEach(function(el){
+          if(el.key===entity.key){
+            $scope.newsData.d3.push(el);
+          }
+        })
       } else {
         entity.checked = false;
         var index;
