@@ -57,16 +57,39 @@ angular.module('newsApp')
     //         return '<strong>YO!' + y + '</strong>'
     //     }
     // }
+
+    $scope.resetFilters = function() {
+      $scope.showEntityFilter === false;
+      angular.forEach($scope.newsData.sources, function(el){
+        el.selected=false;
+      })
+      $scope.sourceFilteredArr = [];
+      sourceFilteredArr = [];
+       console.log($scope.showEntityFilter);
+    }
+
+    $scope.resetAllFilters = function() {
+      $scope.showEntityFilter === undefined;
+      angular.forEach($scope.newsData.sources, function(el){
+        el.selected=false;
+      })
+      angular.forEach($scope.newsData.entities, function(el){
+        el.selected=false;
+      })
+      $scope.sourceFilteredArr = [];
+      sourceFilteredArr = [];
+      console.log($scope.showEntityFilter);
+    }
     var sourceFilteredArr = [];
 
     $scope.clickedSource = function(source){
       if(typeof $scope.newsData.d3 === 'undefined') {
         $scope.newsData.d3 = [];
       }
-      if(source.checked === false || source.checked === undefined){
-        source.checked = true;
+      if(source.selected === false || source.selected === undefined){
+        source.selected = true;
       } else {
-        source.checked = false;
+        source.selected = false;
       }
 
       // if only only one news source
@@ -80,7 +103,7 @@ angular.module('newsApp')
       // end of one news source
       var sourcesArr = []
       $scope.newsData.sources.forEach(function(element){
-        if(element.checked===true){
+        if(element.selected===true){
           sourcesArr.push(element.label);
         }
       })
@@ -101,7 +124,7 @@ angular.module('newsApp')
         var newObj = {
           key: newsDataNotFilteredArr[i].key,
           values: filteredSrcArr,
-          checked: newsDataNotFilteredArr[i].checked
+          selected: newsDataNotFilteredArr[i].selected
         };
         if (newObj.values.length !== 0){
           newsDataFilteredArr.push(newObj);
@@ -132,8 +155,8 @@ angular.module('newsApp')
       if(typeof $scope.newsData.d3 === 'undefined') {
         $scope.newsData.d3 = [];
       }
-      if (entity.checked === false){
-        entity.checked = true;
+      if (entity.selected === false || entity.select === undefined){
+        entity.selected = true;
         $scope.newsData.d3.push(entity);
         // sourceFilteredArr.forEach(function(el){
         //   if(el.key===entity.key){
@@ -141,7 +164,7 @@ angular.module('newsApp')
         //   }
         // })
       } else {
-        entity.checked = false;
+        entity.selected = false;
         var index;
         for(var i = 0; i <$scope.newsData.d3.length; i++){
           if($scope.newsData.d3[i].key===entity.key){
@@ -149,9 +172,8 @@ angular.module('newsApp')
           }
         }
         $scope.newsData.d3.splice(index,1);
-        console.log($scope.newsData.d3);
       }
-      console.log($scope.newsData);
+      console.log('newsData.d3: ', $scope.newsData.d3);
     }
     $scope.chart = null;
     $http.get('/api/gTrends/getTrends').success(function(data){

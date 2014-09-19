@@ -44,24 +44,26 @@
           <h4>Filter by News Source</h4>
           <div ng-repeat="source in newsData.sources">
             <label class="checkbox-inline">
-            <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clickedSource(source)">{{source.label}}
+            <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clickedSource(source)" ng-disabled="showEntityFilter" ng-model="source.selected">{{source.label}}
             </label>
           </div>
-        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="true" class="btn-warning" ng-model="showEntityFilter">Next</button>
+        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntityFilter" ng-disabled="showEntityFilter">Next</button>
+        <button ng-click="resetFilters()" ng-disabled="showEntityFilter">Reset</button>
         </form>
         <div ng-if="showEntityFilter === true">
           <form>
             <h4>Filter by Entities</h4>
             <div ng-repeat="entity in sourceFilteredArr">
               <label class="checkbox-inline">
-              <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clickedEntity(entity)">{{entity.key}}
+              <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clickedEntity(entity)" ng-model="entity.selected">{{entity.key}}
               </label>
             </div>
+<!--             <button ng-click="resetAllFilters()">Reset All Filters</button> -->
           </form>
         </div>
 
         <nvd3-scatter-chart
-            data="newsData.display"
+            data="newsData.d3"
             id="sentimentComparison"
             width="1000"
             height="400"
@@ -73,6 +75,7 @@
             transitionDuration="1000">
             <svg id="chart" width="960" height="500"></svg>
         </nvd3-scatter-chart>
+
       </div>
       <div ng-if="newsData.wiki!=='Not Available'">
         <wiki></wiki>
