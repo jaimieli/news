@@ -22,7 +22,6 @@
       showLegend="true"
       transitionDuration="1000"
       tooltipXContent="tooltipXContentFunction()"
-      yaxislabel="false";
       >
       <svg id="chart" width="960" height="500"></svg>
     </nvd3-scatter-chart>
@@ -45,10 +44,20 @@
               </label>
             </div>
           </div>
+          <div class="form-group">
+            <h4>Select Sentiment Type</h4>
+            <button ng-click="toggleSelectedTypes()" class="btn-danger">Toggle Selected Sentiment Types</button>
+            <p ng-if="typeChosen === 0">Please select at least one type.</p>
+            <div ng-repeat="item in newsData.sentimentTypes">
+              <label class="checkbox-inline">
+              <input type="checkbox" id="type-{{$index}}" value="item.type" ng-click="clicked(item)" ng-model="item.selected">{{item.type}}
+              </label>
+            </div>
+          </div>
 <!--           <div class="form-group">
             <h4>Select Entit(ies)</h4> -->
 <!--             <p>(listed by # of articles entity was mentionedi in (most to least)) -->
- <!--            <button ng-click="toggleSelectedEntities()" class="btn-danger">Toggle Selected Entities</button>
+<!--             <button ng-click="toggleSelectedEntities()" class="btn-danger">Toggle Selected Entities</button>
             <p ng-if="entityChosen === 0">Please select at least one entity.</p>
             <div ng-repeat="entity in newsData.entities">
               <label class="checkbox-inline">
