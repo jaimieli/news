@@ -58,27 +58,43 @@ angular.module('newsApp')
     //     }
     // }
 
-    $scope.allSelected = false;
+    // $scope.allSelected = false;
 
-    $scope.selectText = "Select All";
-
-    $scope.toggleSelectedSource = function(source) {
-        console.log(source);
-        $scope.allSelected = !$scope.allSelected;
+    // $scope.selectText = "Select All";
+    $scope.tooltipXContentFunction = function(){
+        return function(key, x, y) {
+            return '<strong>YO!' + '</strong>'
+        }
+    }
+    $scope.toggleSelectedSource = function() {
+        // $scope.allSelected = !$scope.allSelected;
         angular.forEach($scope.newsData.sources, function(source){
             $scope.clicked(source);
         });
 
         /*Change the text*/
-        if($scope.allSelected){
-            $scope.selectText = "Deselect All";
-        } else {
-            $scope.selectText = "Select All";
-        }
+        // if($scope.allSelected){
+        //     $scope.selectText = "Deselect All";
+        // } else {
+        //     $scope.selectText = "Select All";
+        // }
+    };
+    $scope.toggleSelectedEntities = function() {
+        // $scope.allSelected = !$scope.allSelected;
+        angular.forEach($scope.newsData.entities, function(entity){
+            $scope.clicked(entity);
+        });
+
+        /*Change the text*/
+        // if($scope.allSelected){
+        //     $scope.selectText = "Deselect All";
+        // } else {
+        //     $scope.selectText = "Select All";
+        // }
     };
     $scope.clicked = function(thing) {
-      var entityChosen = 0;
-      var sourceChosen = 0;
+      // $scope.entityChosen = 0;
+      $scope.sourceChosen = 0;
       var sourcesArr = [];
       var entitiesArr = [];
       if(thing.selected === false || thing.selected === undefined){
@@ -88,21 +104,21 @@ angular.module('newsApp')
       }
       $scope.newsData.sources.forEach(function(el){
         if (el.selected === true) {
-          sourceChosen++;
+          $scope.sourceChosen++;
           sourcesArr.push(el.label);
         }
       })
       console.log('sources: ', $scope.newsData.sources);
-      $scope.newsData.entities.forEach(function(el){
-        if (el.selected === true) {
-          entityChosen++;
-          entitiesArr.push(el.label);
-        }
-      })
-      console.log('entities: ', $scope.newsData.entities)
-      console.log('entityChosen: ', entityChosen);
-      console.log('sourceChosen: ', sourceChosen);
-      if (sourceChosen >= 0 && entityChosen > 0) {
+      // $scope.newsData.entities.forEach(function(el){
+      //   if (el.selected === true) {
+      //     $scope.entityChosen++;
+      //     entitiesArr.push(el.label);
+      //   }
+      // })
+      // console.log('entities: ', $scope.newsData.entities)
+      // console.log('$scope.entityChosen: ', $scope.entityChosen);
+      console.log('$scope.sourceChosen: ', $scope.sourceChosen);
+      if ($scope.sourceChosen >= 0) {
         console.log('one of each chosen')
 
         // filter by source
@@ -128,23 +144,21 @@ angular.module('newsApp')
           }
         }
         console.log('after source filter: ', newsDataFilteredArr)
-        // filter by entities
-        $scope.newsData.d3 = [];
-        var filteredFinal = [];
-        console.log('entities array: ', entitiesArr);
-        console.log('newsDataFilteredArr: ', newsDataFilteredArr)
-        for (var i = 0; i < newsDataFilteredArr.length; i++){
-          var filteredFinal = newsDataFilteredArr.filter(function(el){
-            if(entitiesArr.indexOf(el.key) !== -1) {
-              return el;
-            }
-          });
-        } // closes for loop
-        console.log('filteredFinal: ', filteredFinal);
-        $scope.newsData.d3 = filteredFinal;
+        // // filter by entities
+        // $scope.newsData.d3 = [];
+        // var filteredFinal = [];
+        // console.log('entities array: ', entitiesArr);
+        // console.log('newsDataFilteredArr: ', newsDataFilteredArr)
+        // for (var i = 0; i < newsDataFilteredArr.length; i++){
+        //   var filteredFinal = newsDataFilteredArr.filter(function(el){
+        //     if(entitiesArr.indexOf(el.key) !== -1) {
+        //       return el;
+        //     }
+        //   });
+        // } // closes for loop
+        // console.log('filteredFinal: ', filteredFinal);
+        $scope.newsData.d3 = newsDataFilteredArr;
         console.log('newsData d3: ', $scope.newsData.d3);
-      } else {
-        alert('must choose at least one source and one entity');
       }
     }
     $scope.resetSourceFilters = function() {

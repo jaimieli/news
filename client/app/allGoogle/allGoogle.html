@@ -21,6 +21,8 @@
       forceX="[-3,3]"
       showLegend="true"
       transitionDuration="1000"
+      tooltipXContent="tooltipXContentFunction()"
+      yaxislabel="false";
       >
       <svg id="chart" width="960" height="500"></svg>
     </nvd3-scatter-chart>
@@ -29,26 +31,31 @@
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
       <div ng-if="showChart === true" class="chartType">
 
-        <button id="selectall" ng-click="toggleSelectedSource(newsData.sources)"><u>{{selectText}}</u></button>
+<!--         <button id="selectall" ng-click="toggleSelectedSource(newsData.sources)"><u>{{selectText}}</u></button> -->
 
         <form class="form-inline">
-          <h4>Select News Source(s)</h4>
-<!--           <p ng-if="sourceChosen===0">Please select at least one source.</p> -->
-          <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
-            <label class="checkbox-inline">
-            <input type="checkbox" id="source-{{$index}}" value="{{source.label}}" ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}
-            </label>
+          <div class="form-group">
+            <h4>Select News Source(s)</h4>
+<!--             <p>(listed alphabetically)</p> -->
+            <button ng-click="toggleSelectedSource()" class="btn-danger">Toggle Selected Sources</button>
+            <p ng-if="sourceChosen === 0">Please select at least one source.</p>
+            <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
+              <label class="checkbox-inline">
+              <input type="checkbox" id="source-{{$index}}" value="{{source.label}}" ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}
+              </label>
+            </div>
           </div>
-        </form>
-
-        <form>
-          <h4>Select Entit(ies)</h4>
-  <!--         <p ng-if="entityChosen===0">Please select at least one entity.</p> -->
-          <div ng-repeat="entity in newsData.entities">
-            <label class="checkbox-inline">
-            <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clicked(entity)" ng-model="entity.selected">{{entity.label}}
-            </label>
-          </div>
+<!--           <div class="form-group">
+            <h4>Select Entit(ies)</h4> -->
+<!--             <p>(listed by # of articles entity was mentionedi in (most to least)) -->
+ <!--            <button ng-click="toggleSelectedEntities()" class="btn-danger">Toggle Selected Entities</button>
+            <p ng-if="entityChosen === 0">Please select at least one entity.</p>
+            <div ng-repeat="entity in newsData.entities">
+              <label class="checkbox-inline">
+              <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clicked(entity)" ng-model="entity.selected">{{entity.label}}
+              </label>
+            </div>
+          </div> -->
         </form>
 
         <nvd3-scatter-chart
@@ -61,7 +68,9 @@
             showYaxis="false"
             forceX="[-1,1]"
             showLegend="true"
-            transitionDuration="1000">
+            transitionDuration="1000"
+            xaxislabel="Sentiment"
+            >
             <svg id="chart" width="960" height="500"></svg>
         </nvd3-scatter-chart>
 
