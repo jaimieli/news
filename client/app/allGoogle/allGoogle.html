@@ -29,68 +29,27 @@
       <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showChart">Show Chart</button>
       <div ng-if="showChart === true" class="chartType">
 
-<!--         <form class="form-inline">
-          <div class="form-group">
-            <h4>Filter by Entities</h4>
-            <div ng-dropdown-multiselect="" options="newsData.entities" selected-model="entityModel" extra-settings="fullObj" translation-texts="entityCustomTexts"></div>
-          </div>
-          <div class="form-group">
-            <h4>Filter by News Source</h4>
-            <div ng-dropdown-multiselect="" options="newsData.sources" selected-model="sourceModel" extra-settings="fullObj" translation-texts="sourceCustomTexts"></div>
-          </div>
-        </form> -->
-
-<!--         input and buttons disabled -->
-<!-- ng-disabled="showEntityFilter" -->
-
-<!--         <form class="form-inline">
-          <h4>Select News Source(s)</h4>
-          <div ng-repeat="source in newsData.sources">
-            <label class="checkbox-inline">
-            <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clickedSource(source)" ng-model="source.selected">{{source.label}}
-            </label>
-          </div>
-        </form> -->
-
         <button id="selectall" ng-click="toggleSelectedSource(newsData.sources)"><u>{{selectText}}</u></button>
 
         <form class="form-inline">
-          <h4>Select News Source(s) 2</h4>
+          <h4>Select News Source(s)</h4>
 <!--           <p ng-if="sourceChosen===0">Please select at least one source.</p> -->
-          <div ng-repeat="source in newsData.sources">
+          <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
             <label class="checkbox-inline">
-            <input type="checkbox" id="thing {{$index}}" value="{{source.label}}" ng-click="clicked(source)" ng-model="source.selected">{{source.label}}
+            <input type="checkbox" id="source-{{$index}}" value="{{source.label}}" ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}
             </label>
           </div>
         </form>
 
-
-
-<!--         <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntityFilter" >Next</button> -->
-     <!--    <button ng-click="resetSourceFilters()">Clear Source Filters</button> -->
-
         <form>
-          <h4>Select Entit(ies) 2</h4>
+          <h4>Select Entit(ies)</h4>
   <!--         <p ng-if="entityChosen===0">Please select at least one entity.</p> -->
           <div ng-repeat="entity in newsData.entities">
             <label class="checkbox-inline">
             <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clicked(entity)" ng-model="entity.selected">{{entity.label}}
             </label>
           </div>
-        <!--   <button ng-click="resetEntityFilters()">Clear Entity Filters</button> -->
         </form>
-
- <!--        <div ng-if="showEntityFilter === true">
-          <form>
-            <h4>Select Entit(ies)</h4>
-            <div ng-repeat="entity in sourceFilteredArr">
-              <label class="checkbox-inline">
-              <input type="checkbox" id="entity-{{$index}}" value="entity.key" ng-click="clickedEntity(entity)" ng-model="entity.selected">{{entity.key}}
-              </label>
-            </div>
-            <button ng-click="resetAllFilters()">Reset All Filters</button>
-          </form>
-        </div> -->
 
         <nvd3-scatter-chart
             data="newsData.d3"

@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('647c071a6b4444210a62e932970dd68912b5064b');
+var alchemy = new AlchemyAPI('fd4b9e657d83ed2455f21228009313a4db8a2c75');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -140,17 +140,39 @@ exports.getArticle = function(req, res) {
 
   var getSourcesAndWiki = function(done){
     var getSources = function(callback) {
+      function getHostName(url) {
+          var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+          if (match != null && match.length > 2 &&
+              typeof match[2] === 'string' && match[2].length > 0) {
+          return match[2];
+          }
+          else {
+              return null;
+          }
+      }
       dataObj.sources = [];
       var counter = 1;
       cleanData.forEach(function(el){
         var sourceObj = {};
         sourceObj['label'] = el.href;
-        sourceObj['id'] = counter;
+        sourceObj['id'] = counter
+        sourceObj['cleanLabel'] = getHostName(el.href);
         counter++;
         dataObj.sources.push(sourceObj);
       })
+      var hash = {};
+      dataObj.sources.forEach(function(el){
+        if (hash[el.cleanLabel] === undefined) {
+          hash[el.cleanLabel] = [];
+        }
+        hash[el.cleanLabel].push(el.label);
+        if (hash[el.cleanLabel].length > 1) {
+          el.cleanLabel = el.cleanLabel + ' ' + hash[el.cleanLabel].length;
+        }
+      });
       callback();
     };
+
     var getWiki = function(callback) {
       var options = {query: query, 'format': 'html', summaryOnly: true};
       wikipedia.searchArticle(options, function(err, htmlWikiText) {
