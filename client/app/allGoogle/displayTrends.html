@@ -1,0 +1,90 @@
+<header class="navbar navbar-bright navbar-fixed-top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/allGoogle" class="navbar-brand">News App</a>
+<!--     </div>
+    <nav class="collapse navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/allGoogle#0">Trend 1</a>
+        </li>
+        <li>
+          <a href="/allGoogle#1">Trend 2</a>
+        </li>
+        <li>
+          <a href="/allGoogle#2">Trend 3</a>
+        </li>
+        <li>
+          <a href="/allGoogle#3">Trend 4</a>
+        </li>
+      </ul>
+    </nav>
+  </div> -->
+</header>
+
+<div id="masthead">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <h1>Trending News
+          <p class="lead"></p>
+        </h1>
+      </div>
+      <div class="col-md-5">
+        <div class="well well-lg">
+          <div class="row">
+            <div class="col-sm-12">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- row -->
+  </div> <!-- container -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="top-spacer">
+        </div>
+      </div>
+    </div>
+  </div> <!-- container -->
+</div> <!-- masthead -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel">
+        <div class="panel-body">
+          <div ng-repeat="trend in trendsArr">
+            <div id={{$index}} class="row" ng-click="google.getNews(trend)">
+              <br>
+              <div class="col-md-2 col-sm-3 text-center">
+                <a class="story-title" href="#"><img alt="" src="{{trend.property3.src}}" style="width:100px;height:100px" class="img-circle"></a>
+              </div><!--  col-md-2 -->
+              <div class="col-md-10 col-sm-9">
+                <h3 ng-click="google.getNews(trend)"><a>{{ trend.property1.text }}</a></h3>
+                <div class="row">
+                  <div class="col-xs-9">
+                  <h4><span class="label label-default">{{ trend.property2 }} searches</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" <a href="google.getNews(trend)" class="text-muted">Learn More</a></small>
+                  </h4>
+                  </div> <!-- col-xs-9 -->
+                  <div class="col-xs-3">
+                  </div> <!-- col-xs-3 -->
+                </div> <!-- row -->
+              <br><br>
+              </div><!--  col-md-10 -->
+            </div><!-- div id -->
+          <hr>
+          </div> <!-- ng-repeat trends -->
+        </div> <!-- panel-body -->
+      </div> <!-- panel -->
+    </div> <!-- col-md-12 -->
+  </div> <!-- row -->
+</div> <!-- container -->

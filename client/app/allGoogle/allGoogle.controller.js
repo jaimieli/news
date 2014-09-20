@@ -206,8 +206,9 @@ angular.module('newsApp')
       $scope.trendsArr = data;
       // console.log($scope.trendsArr);
     });
-
+    $scope.displayView = true;
     this.getNews = function(obj) {
+      $scope.displayView = false;
       $http.post('/api/gNews/getArticle', obj).success(function(data){
         $scope.newsData = data;
         // mapping data to display in chart
@@ -350,7 +351,7 @@ angular.module('newsApp')
     return {
       scope: false,
       restrict: 'E',
-      template: '<p>Context:</p>',
+      template: '<h2>Context</h2>',
       link: function(scope, element, attrs){
         element.append(scope.newsData.wiki);
       }
