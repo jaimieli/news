@@ -32,7 +32,7 @@
 
 <!--         <button id="selectall" ng-click="toggleSelectedSource(newsData.sources)"><u>{{selectText}}</u></button> -->
 
-        <form class="form-inline">
+        <form class="form-inline" name="myForm">
           <div class="form-group">
             <h4>Select News Source(s)</h4>
 <!--             <p>(listed alphabetically)</p> -->
@@ -85,17 +85,20 @@
 
       </div>
       <div ng-if="newsData.wiki!=='Not Available'">
-        <wiki></wiki>
+        <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-success" ng-model="showWiki">Show Wiki</button>
+        <div ng-if="showWiki === true">
+          <wiki></wiki>
+        </div>
       </div>
-        <div ng-repeat="outlet in newsData.cleanData | limitTo:10">
+        <div ng-repeat="outlet in newsData.cleanData | limitTo:10 ">
           <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
           <p>{{ outlet.body | limitTo:500 }}<p>
           <p>{{ outlet.href }}<p>
           <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showSentiment">Show Overall Sentiment</button>
           <h4 ng-show="showSentiment === true"class="sentimentType">Sentiment: {{ outlet.docSentiment.type }}</h4>
           <h4 ng-show="showSentiment === true"class="sentimentScore">Score: {{ outlet.docSentiment.score }}</h4>
-          <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntity">Show Entity Sentiment</button>
-          <div ng-show="showEntity === true" ng-repeat="entity in outlet.entitySentiment">{{ entity }}</div>
+<!--           <button btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" class="btn-warning" ng-model="showEntity">Show Entity Sentiment</button> -->
+<!--           <div ng-show="showEntity === true" ng-repeat="entity in outlet.entitySentiment">{{ entity }}</div> -->
         </div> <!-- ng-repeat outlet -->
     </div> <!-- ng-if newsData -->
   </div> <!-- column -->

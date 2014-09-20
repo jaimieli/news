@@ -105,12 +105,15 @@ angular.module('newsApp')
         //     $scope.selectText = "Select All";
         // }
     };
+    $scope.selected = function(outlet) {
+      return($scope.sourcesArr.indexOf(outlet.href) == -1);
+    }
     $scope.clicked = function(thing) {
       // $scope.entityChosen = 0;
       $scope.sourceChosen = 0;
       $scope.typeChosen = 0;
       $scope.entityChosen = 0;
-      var sourcesArr = [];
+      $scope.sourcesArr = [];
       var entitiesArr = [];
       var typesArr = [];
       if(thing.selected === false || thing.selected === undefined){
@@ -121,40 +124,35 @@ angular.module('newsApp')
       $scope.newsData.sources.forEach(function(el){
         if (el.selected === true) {
           $scope.sourceChosen++;
-          sourcesArr.push(el.label);
+          $scope.sourcesArr.push(el.label);
         }
       })
-      console.log('sources: ', $scope.newsData.sources);
+      // console.log('sources: ', $scope.newsData.sources);
       $scope.newsData.sentimentTypes.forEach(function(el){
         if (el.selected === true) {
           $scope.typeChosen++;
           typesArr.push(el.type);
         }
       })
-      console.log('types: ', $scope.newsData.sentimentTypes);
-      console.log('$scope.typeChosen: ', $scope.typeChosen);
+      // console.log('types: ', $scope.newsData.sentimentTypes);
+      // console.log('$scope.typeChosen: ', $scope.typeChosen);
       $scope.newsData.entities.forEach(function(el){
         if (el.selected === true) {
           $scope.entityChosen++;
           entitiesArr.push(el.label);
         }
       })
-      console.log('entities: ', $scope.newsData.entities)
-      console.log('$scope.entityChosen: ', $scope.entityChosen);
-      console.log('$scope.sourceChosen: ', $scope.sourceChosen);
+      // console.log('entities: ', $scope.newsData.entities)
+      // console.log('$scope.entityChosen: ', $scope.entityChosen);
+      // console.log('$scope.sourceChosen: ', $scope.sourceChosen);
       if ($scope.sourceChosen > 0 && $scope.typeChosen > 0) {
-        console.log('one of each chosen')
-
         // filter by source
         var newsDataNotFilteredArr = $scope.newsData.display;
-        console.log("this is inside clicksource before filter: ", newsDataNotFilteredArr);
-
         var newsDataFilteredArr = [];
-
         for (var i = 0; i < newsDataNotFilteredArr.length; i++) {
           var unFilteredSrcArr = newsDataNotFilteredArr[i].values;
           var filteredSrcArr = unFilteredSrcArr.filter(function(src) {
-            if (sourcesArr.indexOf(src.source) !== -1 && typesArr.indexOf(src.type) !== -1) {
+            if ($scope.sourcesArr.indexOf(src.source) !== -1 && typesArr.indexOf(src.type) !== -1) {
               return src;
             }
           });
@@ -167,7 +165,7 @@ angular.module('newsApp')
             newsDataFilteredArr.push(newObj);
           }
         } // closes for loop
-        console.log('after source filter: ', newsDataFilteredArr)
+        // console.log('after source filter: ', newsDataFilteredArr)
         // // filter by entities
         $scope.newsData.d3 = [];
         // var filteredFinal = [];
@@ -183,11 +181,12 @@ angular.module('newsApp')
         // console.log('filteredFinal: ', filteredFinal);
         $scope.newsData.d3 = newsDataFilteredArr;
         // $scope.newsData.d3 = filteredFinal;
-        console.log('newsData d3: ', $scope.newsData.d3);
       } // closes if
       else {
         $scope.newsData.d3 = [];
       }
+      console.log('newsData: ', $scope.newsData);
+      console.log('$scope.sourcesArr: ', $scope.sourcesArr);
     }
     $scope.resetSourceFilters = function() {
       angular.forEach($scope.newsData.sources, function(el){
@@ -202,90 +201,6 @@ angular.module('newsApp')
     }
     var sourceFilteredArr = [];
 
-    $scope.clickedSource = function(source){
-      if(typeof $scope.newsData.d3 === 'undefined') {
-        $scope.newsData.d3 = [];
-      }
-      if(source.selected === false || source.selected === undefined){
-        source.selected = true;
-      } else {
-        source.selected = false;
-      }
-      var sourcesArr = []
-      $scope.newsData.sources.forEach(function(element){
-        if(element.selected===true){
-          sourcesArr.push(element.label);
-        }
-      })
-
-      var newsDataNotFilteredArr = $scope.newsData.display;
-      console.log("this is inside clicksource before filter: ", newsDataNotFilteredArr);
-
-      var newsDataFilteredArr = [];
-
-      for (var i = 0; i < newsDataNotFilteredArr.length; i++) {
-        var unFilteredSrcArr = newsDataNotFilteredArr[i].values;
-        var filteredSrcArr = unFilteredSrcArr.filter(function(src) {
-          if (sourcesArr.indexOf(src.source) !== -1) {
-            return src;
-          }
-        });
-
-        var newObj = {
-          key: newsDataNotFilteredArr[i].key,
-          values: filteredSrcArr,
-          selected: newsDataNotFilteredArr[i].selected
-        };
-        if (newObj.values.length !== 0){
-          newsDataFilteredArr.push(newObj);
-        }
-      }
-      console.log("after filter newsdatafileredarr", newsDataFilteredArr)
-      sourceFilteredArr = newsDataFilteredArr;
-      $scope.sourceFilteredArr = sourceFilteredArr;
-
-      // $scope.newsData.d3 = $scope.newsData.display.map(function(entity){
-      //   var filtered;
-      //   var final = [];
-      //   sourcesArr.forEach(function(url){
-      //     // console.log('entity values', entity.values);
-      //     filtered = entity.values.filter(function(el){
-      //       return el.source === url;
-      //     })
-      //     final.push(filtered[0]);
-      //   })
-      //   entity.values = final;
-      //   return entity;
-      //   })
-
-      // console.log("after filter:" ,$scope.newsData.d3);
-    }
-
-    $scope.clickedEntity = function(entity) {
-
-      if(typeof $scope.newsData.d3 === 'undefined') {
-        $scope.newsData.d3 = [];
-      }
-      if (entity.selected === false || entity.select === undefined){
-        entity.selected = true;
-        $scope.newsData.d3.push(entity);
-        // sourceFilteredArr.forEach(function(el){
-        //   if(el.key===entity.key){
-        //     $scope.newsData.d3.push(el);
-        //   }
-        // })
-      } else {
-        entity.selected = false;
-        var index;
-        for(var i = 0; i <$scope.newsData.d3.length; i++){
-          if($scope.newsData.d3[i].key===entity.key){
-            index = i;
-          }
-        }
-        $scope.newsData.d3.splice(index,1);
-      }
-      console.log('newsData.d3: ', $scope.newsData.d3);
-    }
     $scope.chart = null;
     $http.get('/api/gTrends/getTrends').success(function(data){
       $scope.trendsArr = data;
@@ -330,6 +245,13 @@ angular.module('newsApp')
             ];
         }
         // end of newsData.display data for charts
+        // default: select all
+        angular.forEach($scope.newsData.sentimentTypes, function(el){
+          $scope.clicked(el);
+        })
+        angular.forEach($scope.newsData.sources, function(el){
+          $scope.clicked(el);
+        })
         console.log($scope.newsData);
       });
     };
@@ -339,6 +261,90 @@ angular.module('newsApp')
         console.log(data);
       });
     };
+    // $scope.clickedSource = function(source){
+    //   if(typeof $scope.newsData.d3 === 'undefined') {
+    //     $scope.newsData.d3 = [];
+    //   }
+    //   if(source.selected === false || source.selected === undefined){
+    //     source.selected = true;
+    //   } else {
+    //     source.selected = false;
+    //   }
+    //   var sourcesArr = []
+    //   $scope.newsData.sources.forEach(function(element){
+    //     if(element.selected===true){
+    //       sourcesArr.push(element.label);
+    //     }
+    //   })
+
+    //   var newsDataNotFilteredArr = $scope.newsData.display;
+    //   console.log("this is inside clicksource before filter: ", newsDataNotFilteredArr);
+
+    //   var newsDataFilteredArr = [];
+
+    //   for (var i = 0; i < newsDataNotFilteredArr.length; i++) {
+    //     var unFilteredSrcArr = newsDataNotFilteredArr[i].values;
+    //     var filteredSrcArr = unFilteredSrcArr.filter(function(src) {
+    //       if (sourcesArr.indexOf(src.source) !== -1) {
+    //         return src;
+    //       }
+    //     });
+
+    //     var newObj = {
+    //       key: newsDataNotFilteredArr[i].key,
+    //       values: filteredSrcArr,
+    //       selected: newsDataNotFilteredArr[i].selected
+    //     };
+    //     if (newObj.values.length !== 0){
+    //       newsDataFilteredArr.push(newObj);
+    //     }
+    //   }
+    //   console.log("after filter newsdatafileredarr", newsDataFilteredArr)
+    //   sourceFilteredArr = newsDataFilteredArr;
+    //   $scope.sourceFilteredArr = sourceFilteredArr;
+
+    //   // $scope.newsData.d3 = $scope.newsData.display.map(function(entity){
+    //   //   var filtered;
+    //   //   var final = [];
+    //   //   sourcesArr.forEach(function(url){
+    //   //     // console.log('entity values', entity.values);
+    //   //     filtered = entity.values.filter(function(el){
+    //   //       return el.source === url;
+    //   //     })
+    //   //     final.push(filtered[0]);
+    //   //   })
+    //   //   entity.values = final;
+    //   //   return entity;
+    //   //   })
+
+    //   // console.log("after filter:" ,$scope.newsData.d3);
+    // }
+
+    // $scope.clickedEntity = function(entity) {
+
+    //   if(typeof $scope.newsData.d3 === 'undefined') {
+    //     $scope.newsData.d3 = [];
+    //   }
+    //   if (entity.selected === false || entity.select === undefined){
+    //     entity.selected = true;
+    //     $scope.newsData.d3.push(entity);
+    //     // sourceFilteredArr.forEach(function(el){
+    //     //   if(el.key===entity.key){
+    //     //     $scope.newsData.d3.push(el);
+    //     //   }
+    //     // })
+    //   } else {
+    //     entity.selected = false;
+    //     var index;
+    //     for(var i = 0; i <$scope.newsData.d3.length; i++){
+    //       if($scope.newsData.d3[i].key===entity.key){
+    //         index = i;
+    //       }
+    //     }
+    //     $scope.newsData.d3.splice(index,1);
+    //   }
+    //   console.log('newsData.d3: ', $scope.newsData.d3);
+    // }
   })
   .directive('wiki', function() {
     return {
