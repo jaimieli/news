@@ -61,17 +61,11 @@ angular.module('newsApp')
     // $scope.allSelected = false;
 
     // $scope.selectText = "Select All";
-    $scope.tooltipXContentFunction =  function(key, x, y) {
-            console.log('in return of tooltipxfunc')
-            return '<strong>YO!' + x + '</strong>'
-        }
-    // $scope.tooltipXContentFunction = function(){
-    //     console.log('in tooltipxfunc:')
-    //     return function(key, x, y) {
-    //         console.log('in return of tooltipxfunc')
-    //         return '<strong>YO!' + x + '</strong>'
-    //     }
-    // }
+    $scope.tooltipXContentFunction = function(){
+        return function ( key, x ) {
+                    return '<strong> YO' + '</strong>';
+                  }
+    };
     $scope.toggleSelectedSource = function() {
         // $scope.allSelected = !$scope.allSelected;
         angular.forEach($scope.newsData.sources, function(source){
