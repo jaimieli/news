@@ -3,19 +3,27 @@
 angular.module('newsApp')
   .controller('HomeCtrl', function ($scope, $http, socket, $location) {
     this.newArticle = {};
-    // $http.get('/api/articles').success(function(data){
-    //   $scope.articles = data;
-    //   socket.syncUpdates('article', $scope.articles);
-    // });
-    $http.get('/api/sentiments/getArticles').success(function(data){
-      $scope.allArticles = data;
-      console.log(data);
-    })
+    $http.get('/api/articles').success(function(data){
+      $scope.articles = data;
+      socket.syncUpdates('article', $scope.articles);
+    });
+    // $http.get('/api/sentiments/getArticles').success(function(data){
+    //   $scope.allArticles = data;
+    //   console.log(data);
+    // })
+    // $http.get('/api/twitters/search').success(function(data){
+    //   console.log(data);
+    // })
     this.twitter = function() {
       $http.get('/api/twitters/2459115').success(function(data){
         console.log(data);
       });
     };
+    this.twitterStream = function() {
+      $http.get('/api/twitters/search').success(function(data){
+        console.log(data);
+      })
+    }
     this.gTrends = function() {
       $http.get('/api/gTrends/getTrends').success(function(data){
         console.log(data);

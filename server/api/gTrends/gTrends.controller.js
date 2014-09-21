@@ -189,6 +189,7 @@ exports.trends = function(req, res) {
   var doneTasks = function(err, results) {
     if(err) console.log(err);
     // console.log(urlArr);
+    // console.log(dataArr);
     res.send(dataArr);
   };
 

@@ -79,6 +79,42 @@ angular.module('newsApp')
         //     $scope.selectText = "Select All";
         // }
     };
+    $scope.selectAllSources = function() {
+      $scope.allSourcesSelected = !$scope.allSourcesSelected;
+      if ($scope.allSourcesSelected) {
+        $scope.selectSourcesText = "Deselect All";
+        $scope.newsData.sources.forEach(function(el){
+          if (el.selected === false || el.selected === undefined) {
+            $scope.clicked(el);
+          }
+        })
+      } else {
+        $scope.selectSourcesText = "Select All";
+        $scope.newsData.sources.forEach(function(el){
+          if (el.selected === true) {
+            $scope.clicked(el);
+          }
+        })
+      }
+    }
+    $scope.selectAllTypes = function() {
+      $scope.allTypesSelected = !$scope.allTypesSelected;
+      if ($scope.allTypesSelected) {
+        $scope.selectTypesText = "Deselect All";
+        $scope.newsData.sentimentTypes.forEach(function(el){
+          if (el.selected === false || el.selected === undefined) {
+            $scope.clicked(el);
+          }
+        })
+      } else {
+        $scope.selectTypesText = "Select All";
+        $scope.newsData.sentimentTypes.forEach(function(el){
+          if (el.selected === true) {
+            $scope.clicked(el);
+          }
+        })
+      }
+    }
     $scope.toggleSelectedEntities = function() {
         // $scope.allSelected = !$scope.allSelected;
         angular.forEach($scope.newsData.entities, function(entity){
@@ -203,8 +239,12 @@ angular.module('newsApp')
 
     $scope.chart = null;
     $http.get('/api/gTrends/getTrends').success(function(data){
+      // data.forEach(function(el){
+      //   el.property2 = parseInt(el.property2)*1000;
+      // })
       $scope.trendsArr = data;
-      // console.log($scope.trendsArr);
+
+      console.log($scope.trendsArr);
     });
     $scope.displayView = true;
     this.getNews = function(obj) {
@@ -247,12 +287,16 @@ angular.module('newsApp')
         }
         // end of newsData.display data for charts
         // default: select all
-        angular.forEach($scope.newsData.sentimentTypes, function(el){
-          $scope.clicked(el);
-        })
-        angular.forEach($scope.newsData.sources, function(el){
-          $scope.clicked(el);
-        })
+        // angular.forEach($scope.newsData.sentimentTypes, function(el){
+        //   $scope.clicked(el);
+        // })
+        // angular.forEach($scope.newsData.sources, function(el){
+        //   $scope.clicked(el);
+        // })
+        $scope.allTypesSelected = false;
+        $scope.allSourcesSelected = false;
+        $scope.selectAllTypes();
+        $scope.selectAllSources();
         console.log($scope.newsData);
       });
     };

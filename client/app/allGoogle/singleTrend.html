@@ -73,7 +73,7 @@
               <h2>Sentiment Analysis</h2>
               <h4>Select News Source(s)</h4>
   <!--             <p>(listed alphabetically)</p> -->
-              <button ng-click="toggleSelectedSource()" class="btn-danger">Toggle Selected Sources</button>
+              <button ng-click="selectAllSources()" class="btn-danger">{{selectSourcesText}}</button>
               <p ng-if="sourceChosen === 0">Please select at least one source.</p>
               <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
                 <label class="checkbox-inline">
@@ -83,7 +83,7 @@
             </div>
             <div class="form-group">
               <h4>Select Sentiment Type</h4>
-              <button ng-click="toggleSelectedTypes()" class="btn-danger">Toggle Selected Sentiment Types</button>
+              <button ng-click="selectAllTypes()" class="btn-danger">{{selectTypesText}}</button>
               <p ng-if="typeChosen === 0">Please select at least one type.</p>
               <div ng-repeat="item in newsData.sentimentTypes">
                 <label class="checkbox-inline">
@@ -104,6 +104,7 @@
                 showLegend="true"
                 transitionDuration="1000"
                 xaxislabel="Sentiment"
+                nodata="Please select at least one source and one sentiment type"
                 >
                 <svg id="chart" width="960" height="500"></svg>
             </nvd3-scatter-chart>

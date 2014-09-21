@@ -28,6 +28,7 @@
   <div class="col-md-12">
     <h1>News Feed</h1>
     <button ng-click="home.twitter()">Twitter Trends</button>
+    <button ng-click="home.twitterStream()">Twitter Stream</button>
     <button ng-click="home.gTrends()">Google Trends</button>
     <div ng-repeat="articleBody in allArticles">
       <h2><a href="{{ articleBody.href }}">{{ articleBody.text }}</a></h2>
