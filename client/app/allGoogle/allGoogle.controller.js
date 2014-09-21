@@ -4,6 +4,21 @@ angular.module('newsApp')
   .controller('AllgoogleCtrl', function ($scope, $http) {
     $scope.sourceModel = [];
     $scope.entityModel = [];
+    $http.get('/api/gTrends/getTrends').success(function(data){
+      // data.forEach(function(el){
+      //   el.property2 = parseInt(el.property2)*1000;
+      // })
+      $scope.trendsArr = data;
+
+      console.log($scope.trendsArr);
+    });
+    $scope.getTwitter = function(obj){
+      $http.post('/api/twitters/search', obj).success(function(data){
+        console.log(data);
+        $scope.twitterStream = data;
+        socket.syncUpdates('twitter', $scope.twitterStream)
+      })
+    }
     $scope.fullObj = {externalIdProp: ''};
     $scope.entityCustomTexts = {buttonDefaultText: 'Select Entities'}
     $scope.sourceCustomTexts = {buttonDefaultText: 'Select Sources'}
@@ -66,19 +81,6 @@ angular.module('newsApp')
                     return '<strong> YO' + '</strong>';
                   }
     };
-    $scope.toggleSelectedSource = function() {
-        // $scope.allSelected = !$scope.allSelected;
-        angular.forEach($scope.newsData.sources, function(source){
-            $scope.clicked(source);
-        });
-
-        /*Change the text*/
-        // if($scope.allSelected){
-        //     $scope.selectText = "Deselect All";
-        // } else {
-        //     $scope.selectText = "Select All";
-        // }
-    };
     $scope.selectAllSources = function() {
       $scope.allSourcesSelected = !$scope.allSourcesSelected;
       if ($scope.allSourcesSelected) {
@@ -115,32 +117,6 @@ angular.module('newsApp')
         })
       }
     }
-    $scope.toggleSelectedEntities = function() {
-        // $scope.allSelected = !$scope.allSelected;
-        angular.forEach($scope.newsData.entities, function(entity){
-            $scope.clicked(entity);
-        });
-
-        /*Change the text*/
-        // if($scope.allSelected){
-        //     $scope.selectText = "Deselect All";
-        // } else {
-        //     $scope.selectText = "Select All";
-        // }
-    };
-    $scope.toggleSelectedTypes = function() {
-        // $scope.allSelected = !$scope.allSelected;
-        angular.forEach($scope.newsData.sentimentTypes, function(type){
-            $scope.clicked(type);
-        });
-
-        /*Change the text*/
-        // if($scope.allSelected){
-        //     $scope.selectText = "Deselect All";
-        // } else {
-        //     $scope.selectText = "Select All";
-        // }
-    };
     $scope.selected = function(outlet) {
       return($scope.sourcesArr.indexOf(outlet.href) == -1);
     }
@@ -238,19 +214,17 @@ angular.module('newsApp')
     var sourceFilteredArr = [];
 
     $scope.chart = null;
-    $http.get('/api/gTrends/getTrends').success(function(data){
-      // data.forEach(function(el){
-      //   el.property2 = parseInt(el.property2)*1000;
-      // })
-      $scope.trendsArr = data;
-
-      console.log($scope.trendsArr);
-    });
     $scope.displayView = true;
     this.getNews = function(obj) {
       $scope.displayView = false;
       $http.post('/api/gNews/getArticle', obj).success(function(data){
         $scope.newsData = data;
+        // setting undefined doc sentiment scores to unavailable
+        $scope.newsData.cleanData.forEach(function(outlet){
+          if (outlet.docSentiment === "undefined") {
+            outlet.docSentiment === "Unavailable";
+          }
+        })
         // mapping data to display in chart
         $scope.newsData.display = [];
         $scope.newsData.entities = [];

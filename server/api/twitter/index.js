@@ -6,7 +6,7 @@ var controller = require('./twitter.controller');
 var router = express.Router();
 
 // router.get('/:woeid', controller.trends)
-router.get('/search', controller.search)
+router.post('/search', controller.search)
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.post('/', controller.create);

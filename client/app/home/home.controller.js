@@ -20,7 +20,7 @@ angular.module('newsApp')
       });
     };
     this.twitterStream = function() {
-      $http.get('/api/twitters/search').success(function(data){
+      $http.post('/api/twitters/search').success(function(data){
         console.log(data);
       })
     }

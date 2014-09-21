@@ -40,11 +40,13 @@ exports.search = function(req, res){
   //   return res.json(200, tweet)
 
   // })
-  var interests = 'RT && Jameis Winston, Vanessa Hudgens, Alabama Football, Talk Like a Pirate Day, Kaley Cuoco';
-    // location is NYC
-  twit.stream('statuses/filter', {track: interests, language: 'en', locations: ['-74,40,-73,41'], filter_level: 'medium'}, function(stream) {
+
+  var interests = 'Jameis Winston, Vanessa Hudgens, Alabama Football, Talk Like a Pirate Day, Kaley Cuoco';
+    // possibly doing an 'or' search with location
+    // {track: interests, language: 'en', locations: ['-74,40,-73,41'], filter_level: 'medium'}
+  twit.stream('statuses/filter', {track: interests}, function(stream) {
     stream.on('data', function (data) {
-    console.log(data);
+      console.log(data);
     });
     // stream.on('end', function (response) {
     //   console.log("\n====================================================");
