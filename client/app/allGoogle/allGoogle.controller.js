@@ -371,10 +371,10 @@ angular.module('newsApp')
       restrict: 'E',
       template: '<h2>Context</h2>',
       link: function(scope, element, attrs){
-        element.append(scope.newsData.wiki);
-      }
-    };
-  })
+        element.append(scope.newsData.wiki[0].context);
+      } // link function
+    }; // object
+  }) // directive
   .directive('bubbleChart', function(){
     return {
       restrict: 'E',

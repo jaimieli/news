@@ -181,7 +181,10 @@ exports.getArticle = function(req, res) {
         if (htmlWikiText === null) {
           htmlWikiText = "Not Available";
         }
-        dataObj.wiki = htmlWikiText;
+        dataObj.wiki = [];
+        var wikiObj = {};
+        wikiObj['context'] = htmlWikiText;
+        dataObj.wiki.push(wikiObj);
         dataObj.topic = query;
         callback();
       })

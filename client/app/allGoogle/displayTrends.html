@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="/allGoogle" class="navbar-brand">News App</a>
+      <a href="/allGoogle" class="navbar-brand">Home</a>
 <!--     </div>
     <nav class="collapse navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
@@ -32,7 +32,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7">
-        <h1>Trending News
+        <h1>Trending Now
           <p class="lead"></p>
         </h1>
       </div>
@@ -67,10 +67,10 @@
                 <a class="story-title" href="#"><img alt="" src="{{trend.property3.src}}" style="width:100px;height:100px" class="img-circle"></a>
               </div><!--  col-md-2 -->
               <div class="col-md-10 col-sm-9">
-                <h3 ng-click="google.getNews(trend)"><a>{{$index + 1}}. {{ trend.property1.text }}</a></h3>
+                <h3 ng-click="google.getNews(trend)">{{$index + 1}}. {{ trend.property1.text }}</h3>
                 <div class="row">
                   <div class="col-xs-9">
-                  <h4><span class="label label-default"><a href="google.getNews(trend)">{{ trend.property2 }} searches</a></span></h4><h4>
+                  <h4><span class="label label-default">{{ trend.property2 }} searches</span></h4><h4>
                 <!--   <button style="font-family:courier,'new courier';" ng-click="getTwitter(trend)" class="text-muted">Twitter</a></button>
                   </h4> -->
                   </div> <!-- col-xs-9 -->
