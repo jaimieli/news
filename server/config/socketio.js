@@ -22,6 +22,7 @@ function onConnect(socket) {
   require('../api/sentiment/sentiment.socket').register(socket);
   require('../api/article/article.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
+  // require('../api/twitter/twitter.controller').search(null, null, socket);
 }
 
 module.exports = function (socketio) {

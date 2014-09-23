@@ -6,12 +6,12 @@
 
 var errors = require('./components/errors');
 
-module.exports = function(app) {
+module.exports = function(app,socketio) {
 
   // Insert routes below
   app.use('/api/gNews', require('./api/gNew'));
   app.use('/api/gTrends', require('./api/gTrends'));
-  app.use('/api/twitters', require('./api/twitter'));
+  app.use('/api/twitters', require('./api/twitter')(socketio));
   app.use('/api/sentiments', require('./api/sentiment'));
   app.use('/api/articles', require('./api/article'));
   app.use('/api/things', require('./api/thing'));

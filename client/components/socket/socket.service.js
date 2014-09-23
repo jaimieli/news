@@ -35,20 +35,27 @@ angular.module('newsApp')
          * Syncs item creation/updates on 'model:save'
          */
         socket.on(modelName + ':save', function (item) {
-          var oldItem = _.find(array, {_id: item._id});
-          var index = array.indexOf(oldItem);
-          var event = 'created';
-
-          // replace oldItem if it exists
-          // otherwise just add item to the collection
-          if (oldItem) {
-            array.splice(index, 1, item);
-            event = 'updated';
+          console.log("twitter:save gets emitted");
+          if (array.length > 5) {
+            array.shift();
+            array.push(item);
           } else {
             array.push(item);
           }
+          // var oldItem = _.find(array, {_id: item._id});
+          // var index = array.indexOf(oldItem);
+          // var event = 'created';
 
-          cb(event, item, array);
+          // // replace oldItem if it exists
+          // // otherwise just add item to the collection
+          // if (oldItem) {
+          //   array.splice(index, 1, item);
+          //   event = 'updated';
+          // } else {
+          //   array.push(item);
+          // }
+
+          // cb(event, item, array);
         });
 
         /**

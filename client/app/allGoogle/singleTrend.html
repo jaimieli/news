@@ -1,4 +1,4 @@
-<!-- <header class="navbar navbar-bright navbar-fixed-top" role="banner">
+<header class="navbar navbar-bright navbar-fixed-top" role="banner">
   <div class="container">
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
@@ -7,26 +7,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="/allGoogle" class="navbar-brand">News App</a>
-    </div> -->
-<!--     <nav class="collapse navbar-collapse" role="navigation">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="/allGoogle">Sentiment</a>
-        </li>
-        <li>
-          <a href="/allGoogle">Articles</a>
-        </li>
-        <li>
-          <a href="/allGoogle">Trend 3</a>
-        </li>
-        <li>
-          <a href="/allGoogle">Trend 4</a>
-        </li>
-      </ul> -->
-<!--     </nav>
+      <button ng-click="setDisplay(true)" style="background: none; border: none; margin-top: 10px">Home</button>
+<!--       <a href="/allGoogle" class="navbar-brand">Home</a> -->
+    </div>
   </div>
-</header> -->
+</header>
 
 <div id="masthead">
   <div class="container">
@@ -40,6 +25,11 @@
         <div class="well well-lg">
           <div class="row">
             <div class="col-sm-12">
+              <ul>
+                <li ng-repeat="twitter in twitterData | limitTo: 5">
+                  <p ng-bind-html="twitter"></p>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -62,7 +52,20 @@
       <div class="panel">
         <div class="panel-body">
 
+          <div>
+            <h2>Twitter Feed</h2>
+            <ul>
+              <li ng-repeat="twitter in twitterData | limitTo: 5">
+                <p ng-bind-html="twitter"></p>
+              </li>
+            </ul>
+          </div>
+          <br></br>
+          <hr>
+
           <div ng-if="newsData.wiki!=='Not Available'">
+<!--             <div ng-bind-html="newsData.wiki[0].context">
+            </div> -->
             <wiki></wiki>
           </div>
           <br></br>
@@ -76,6 +79,7 @@
               <button ng-click="selectAllSources()" class="btn-danger">{{selectSourcesText}}</button>
               <p ng-if="sourceChosen === 0">Please select at least one source.</p>
               <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
+<!--                 <button ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}</button> -->
                 <label class="checkbox-inline">
                 <input type="checkbox" id="source-{{$index}}" value="{{source.label}}" ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}
                 </label>
@@ -112,7 +116,7 @@
             <hr>
 
             <br>
-            <div ng-repeat="outlet in newsData.cleanData | limitTo:10 ">
+            <div ng-repeat="outlet in newsData.cleanData | limitTo:10 | filter: {selected: 'true'}">
               <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
               <h4 class="sentimentScore">Overall Sentiment Score: {{ outlet.docSentiment.score }}</h4>
               <p>{{ outlet.body | limitTo:500 }}<p>

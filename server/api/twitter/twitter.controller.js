@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var Twitter = require('./twitter.model');
 
+
+
 // Twitter integration
 // var Twit = require('twit');
 // var T = new Twit({
@@ -31,7 +33,8 @@ var twit = new twitter({
 //   });
 // }
 
-exports.search = function(req, res){
+exports.search = function(socket) {
+  return function(req, res, next) {
   // console.log('i am in the twitter search fucntion');
   // var stream = T.stream('statuses/filter', { track: 'mango' })
 
@@ -41,13 +44,25 @@ exports.search = function(req, res){
 
   // })
 
-  var interests = 'Jameis Winston, Vanessa Hudgens, Alabama Football, Talk Like a Pirate Day, Kaley Cuoco';
+  // twittery query interest passed in from the front tend trend
+  var interest = req.body.property1.text;
+
     // possibly doing an 'or' search with location
     // {track: interests, language: 'en', locations: ['-74,40,-73,41'], filter_level: 'medium'}
-  twit.stream('statuses/filter', {track: interests}, function(stream) {
+  twit.stream('statuses/filter', {track: interest, language: 'en'}, function(stream) {
     stream.on('data', function (data) {
-      console.log(data);
+      var turl = data.text.match( /(http|https|ftp):\/\/[^\s]*/i )
+          if ( turl != null ) {
+            turl = data.text.replace( turl[0], '<a href="'+turl[0]+'" target="new">'+turl[0]+'</a>' );
+          } else {
+            turl = data.text;
+          }
+      socket.emit('twitter:save', turl);
+      // socket.emit('twitter:save', data);
+      console.log("new tweet about: ", interest);
+      res.send(200);
     });
+  });
     // stream.on('end', function (response) {
     //   console.log("\n====================================================");
     //   console.log("DESTROYING");
@@ -56,7 +71,7 @@ exports.search = function(req, res){
     // setTimeout(function(){
     //   stream.destroy();
     // }, 60000);
-  });
+  };
 
 }
 // Get list of twitters
@@ -109,6 +124,7 @@ exports.destroy = function(req, res) {
     });
   });
 };
+
 
 function handleError(res, err) {
   return res.send(500, err);

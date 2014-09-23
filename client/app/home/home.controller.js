@@ -20,8 +20,12 @@ angular.module('newsApp')
       });
     };
     this.twitterStream = function() {
-      $http.post('/api/twitters/search').success(function(data){
-        console.log(data);
+      $http.post('/api/twitters/search', {query: 'Jameis Winston'}).success(function(data){
+        $scope.twitterData = [];
+        socket.syncUpdates('twitter', $scope.twitterData);
+
+
+        // console.log('scope twitter data: ', $scope.twitterData.length);
       })
     }
     this.gTrends = function() {

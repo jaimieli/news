@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('newsApp')
-  .controller('AllgoogleCtrl', function ($scope, $http) {
+  .controller('AllgoogleCtrl', function ($scope, $http, socket) {
+
     $scope.sourceModel = [];
     $scope.entityModel = [];
     $http.get('/api/gTrends/getTrends').success(function(data){
@@ -137,8 +138,21 @@ angular.module('newsApp')
         if (el.selected === true) {
           $scope.sourceChosen++;
           $scope.sourcesArr.push(el.label);
+          $scope.newsData.cleanData.forEach(function(element) {
+            if (element.href === el.label) {
+              element.selected = true;
+            }
+          })
+        }
+        if (el.selected === false) {
+          $scope.newsData.cleanData.forEach(function(element) {
+            if (element.href === el.label) {
+              element.selected = false;
+            }
+          })
         }
       })
+      console.log('cleanData: ', $scope.newsData.cleanData);
       // console.log('sources: ', $scope.newsData.sources);
       $scope.newsData.sentimentTypes.forEach(function(el){
         if (el.selected === true) {
@@ -214,9 +228,19 @@ angular.module('newsApp')
     var sourceFilteredArr = [];
 
     $scope.chart = null;
-    $scope.displayView = true;
+    $scope.displayAll = true;
+    $scope.setDisplay = function(){
+      console.log('setting display to ')
+      $scope.displayAll = true;
+    }
     this.getNews = function(obj) {
-      $scope.displayView = false;
+      $scope.showTransition = true;
+      $scope.displayAll = false;
+      $http.post('/api/twitters/search', obj).success(function(data){
+        $scope.twitterData = [];
+        socket.syncUpdates('twitter', $scope.twitterData);
+        // console.log('scope twitter data: ', $scope.twitterData.length);
+      })
       $http.post('/api/gNews/getArticle', obj).success(function(data){
         $scope.newsData = data;
         // setting undefined doc sentiment scores to unavailable
@@ -272,6 +296,7 @@ angular.module('newsApp')
         $scope.selectAllTypes();
         $scope.selectAllSources();
         console.log($scope.newsData);
+        $scope.showTransition = false;
       });
     };
     this.showEntities = function(article) {

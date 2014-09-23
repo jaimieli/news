@@ -1,7 +1,15 @@
 <!-- <div ng-include="'components/navbar/navbar.html'"></div> -->
 
-<div ng-include="'app/allGoogle/displayTrends.html'"></div>
-<div ng-if="newsData" ng-include="'app/allGoogle/singleTrend.html'"></div>
+<!-- <div ng-switch="diplayView">
+  <div ng-include=" 'app/allGoogle/displayTrends.html' " ng-switch-when="all"></div>
+  <div ng-include = " 'app/allGoogle/singleTrend.html' " ng-switch-when="single"></div>
+</div> -->
+
+<div ng-include="'app/allGoogle/displayTrends.html'" ng-show="displayAll"></div>
+<!-- include transition page below -->
+<!-- <div ng-include="displayAll===false"></div> -->
+<div ng-show="showTransition" ng-include=" 'app/allGoogle/transition.html' "></div>
+<div ng-show="displayAll===false && showTransition===false" ng-if="newsData" ng-include="'app/allGoogle/singleTrend.html'"></div>
 
 <!-- <div ng-switch on="displayView">
   <div ng-switch-when="false" ng-include="'app/allGoogle/singleTrend.html'"</div>
