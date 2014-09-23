@@ -6,6 +6,7 @@ module.exports = function(socketio) {
   var router = express.Router();
   // router.get('/:woeid', controller.trends)
   router.post('/search', controller.search(socketio))
+  router.get('/destroy', controller.destroyStream);
   router.get('/', controller.index);
   router.get('/:id', controller.show);
   router.post('/', controller.create);

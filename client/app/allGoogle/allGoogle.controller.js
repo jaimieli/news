@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('newsApp')
-  .controller('AllgoogleCtrl', function ($scope, $http, socket) {
+  .controller('AllgoogleCtrl', function ($scope, $http, socket, $sanitize, $sce) {
 
     $scope.sourceModel = [];
     $scope.entityModel = [];
@@ -73,7 +73,13 @@ angular.module('newsApp')
     //         return '<strong>YO!' + y + '</strong>'
     //     }
     // }
-
+    $scope.stopStream = function(){
+      console.log("sending get to backend to stop stream");
+      $http.get('api/twitters/destroy').success(function(){
+        console.log('destroyed stream');
+      })
+      $scope.twitterData = [];
+    }
     // $scope.allSelected = false;
 
     // $scope.selectText = "Select All";
@@ -243,6 +249,8 @@ angular.module('newsApp')
       })
       $http.post('/api/gNews/getArticle', obj).success(function(data){
         $scope.newsData = data;
+        // wiki data
+        $scope.newsData.wikiClean = $sce.trustAsHtml($scope.newsData.wiki[0].context);
         // setting undefined doc sentiment scores to unavailable
         $scope.newsData.cleanData.forEach(function(outlet){
           if (outlet.docSentiment === "undefined") {
@@ -445,4 +453,9 @@ angular.module('newsApp')
         //and text all with a smooth transition
       } // closes link
     }; // closes directivedefobj
-  }); // closes directive
+  }) // closes directive
+  .filter('htmlToPlainText', function() {
+    return function(text) {
+      return String(text).replace(/<[^>]+>/gm, '');
+    }
+  })

@@ -9,6 +9,7 @@
       </button>
       <button ng-click="setDisplay(true)" style="background: none; border: none; margin-top: 10px">Home</button>
 <!--       <a href="/allGoogle" class="navbar-brand">Home</a> -->
+      <button ng-click="stopStream()">Stop Stream</button>
     </div>
   </div>
 </header>
@@ -51,8 +52,7 @@
     <div class="col-md-12">
       <div class="panel">
         <div class="panel-body">
-
-          <div>
+<!--           <div>
             <h2>Twitter Feed</h2>
             <ul>
               <li ng-repeat="twitter in twitterData | limitTo: 5">
@@ -61,12 +61,17 @@
             </ul>
           </div>
           <br></br>
-          <hr>
+          <hr> -->
 
-          <div ng-if="newsData.wiki!=='Not Available'">
 <!--             <div ng-bind-html="newsData.wiki[0].context">
             </div> -->
-            <wiki></wiki>
+<!--             <wiki></wiki>
+            <div>Using Filter: {{newsData.wiki[0].context | htmlToPlainText}}
+            </div>
+            <h2>Using SCE</h2> -->
+          <div ng-if="newsData.wiki!=='Not Available'">
+            <div ng-bind-html="newsData.wikiClean">
+            </div>
           </div>
           <br></br>
           <hr>

@@ -20,7 +20,9 @@ var twit = new twitter({
       consumer_secret: 'iECmGxKMEAg6Yt4nBbtK8l1KT8WcD6GDizNxoWuBo5AZsDEApu',
       access_token_key: '816844254-CQnlnuoy9hHHjiEJ0r35ecWjZ5AF8I2xZWxF6RsL',
       access_token_secret: 'hgPEbH5efQerj38DA78BDbNpXocDeOcgQrIidJP5nf71t'
-})
+});
+
+var currentTwitStream;
 
 // exports.trends = function(req, res) {
 //   var woeid = req.params.woeid;
@@ -50,6 +52,7 @@ exports.search = function(socket) {
     // possibly doing an 'or' search with location
     // {track: interests, language: 'en', locations: ['-74,40,-73,41'], filter_level: 'medium'}
   twit.stream('statuses/filter', {track: interest, language: 'en'}, function(stream) {
+    currentTwitStream = stream;
     stream.on('data', function (data) {
       var turl = data.text.match( /(http|https|ftp):\/\/[^\s]*/i )
           if ( turl != null ) {
@@ -74,6 +77,12 @@ exports.search = function(socket) {
   };
 
 }
+
+exports.destroyStream = function(req, res) {
+  console.log("receiving command from front end to destroy stream");
+  currentTwitStream.destroy();
+  res.send(200);
+};
 // Get list of twitters
 exports.index = function(req, res) {
   Twitter.find(function (err, twitters) {
