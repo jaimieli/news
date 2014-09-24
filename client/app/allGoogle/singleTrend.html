@@ -9,7 +9,7 @@
       </button>
       <button ng-click="setDisplay(true)" style="background: none; border: none; margin-top: 10px">Home</button>
 <!--       <a href="/allGoogle" class="navbar-brand">Home</a> -->
-      <button ng-click="stopStream()">Stop Stream</button>
+<!--       <button ng-click="stopStream()">Stop Stream</button> -->
     </div>
   </div>
 </header>
@@ -17,17 +17,17 @@
 <div id="masthead">
   <div class="container">
     <div class="row">
-      <div class="col-md-7">
+      <div class="col-md-6">
         <h1>{{ newsData.topic }}
           <p class="lead"></p>
         </h1>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-6">
         <div class="well well-lg">
           <div class="row">
             <div class="col-sm-12">
               <ul>
-                <li ng-repeat="twitter in twitterData | limitTo: 5">
+                <li ng-repeat="twitter in twitterData | limitTo: 4">
                   <p ng-bind-html="twitter"></p>
                 </li>
               </ul>
@@ -52,6 +52,26 @@
     <div class="col-md-12">
       <div class="panel">
         <div class="panel-body">
+          <tabset>
+            <tab heading="Overview" ng-click="display()">
+              <h2>Score Overview</h2>
+              <h4>Average Overall Sentiment: {{newsData.docSentimentAvg}}</h4>
+              <h4>Insert chart of some sort</h4>
+            </tab>
+            <tab heading="Sentiment Breakdown by Article">Analysis 1</tab>
+            <tab heading="Sentiment Breakdown by Entity">Analysis 2</tab>
+          </tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel">
+        <div class="panel-body">
 <!--           <div>
             <h2>Twitter Feed</h2>
             <ul>
@@ -69,7 +89,8 @@
             <div>Using Filter: {{newsData.wiki[0].context | htmlToPlainText}}
             </div>
             <h2>Using SCE</h2> -->
-          <div ng-if="newsData.wiki!=='Not Available'">
+          <div ng-if="newsData.wiki[0].context!=='Not Available'">
+            <h2>Context</h2>
             <div ng-bind-html="newsData.wikiClean">
             </div>
           </div>
@@ -129,9 +150,57 @@
             </div>
             <br></br>
             <hr>
+            <div id="barChart">
+              <nvd3-multi-bar-horizontal-chart
+                data="newsData.barChart"
+                  id="exampleId"
+                  showXAxis="true"
+                  showYAxis="true"
+                  yaxislabel="Sentiment Score"
+                  width="850"
+                  height="350"
+                  interactive="true"
+                  tooltips="true"
+                  showLegend="true"
+                  tooltipcontent="toolTipBarChartContentFunction()"
+                  forceY="[-1,1]"
+                  >
+                <svg></svg>
+              </nvd3-multi-bar-horizontal-chart>
+            </div>
+            <div class="container">
+              <div class="articleButtons">
+                <div class="row">
+                  <div ng-repeat="arrN in newsData.barChart[0].values">
+                    <div class="col-md-1">
+                      <button class="btn negArticleButton"><a href="{{arrN[3]}}">{{arrN[0]}}</a></button>
+                    </div> <!-- col-md-1 -->
+                  </div> <!-- ng-repeat -->
+                </div> <!-- row -->
+                <br></br>
+                <div class="row">
+                  <div ng-repeat="arrP in newsData.barChart[1].values">
+                    <div class="col-md-1">
+                      <button class="btn posArticleButton"><a href="{{arrP[3]}}">{{arrP[0]}}</a></button>
+                    </div><!-- col-md-1 -->
+                  </div><!-- ng-repeat -->
+                </div><!-- row -->
+              </div><!-- articleButtons -->
+            </div>
+            <br></br>
+            <hr>
 
         </div> <!-- panel-body -->
       </div> <!-- panel -->
     </div> <!-- col-md-12 -->
   </div> <!-- row -->
 </div> <!-- container -->
+
+<footer class="footer">
+  <div class="container">
+    <a href="http://twitter.com/lijaimie"><img src="../../assets/images/twitter-wrap.png" alt="Twitter Logo" class="social-icon"></a>
+    <a href="#"><img src="../../assets/images/facebook-wrap.png" alt="Facebook Logo" class="social-icon"></a>
+    <!-- special syntax is an HTML entity that makes the copyright symbol -->
+    <p>&copy; 2014 Jaimie Li</p>
+  </div>
+</footer>

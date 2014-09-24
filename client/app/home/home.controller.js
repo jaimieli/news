@@ -2,6 +2,49 @@
 
 angular.module('newsApp')
   .controller('HomeCtrl', function ($scope, $http, socket, $location) {
+    $scope.toolTipContentFunction = function(){
+      return function(key, x, y, e, graph) {
+          return  'Super New Tooltip' +
+              '<h1>' + key + '</h1>' +
+                '<p>' +  y + ' at ' + x + '</p>'
+      }
+    }
+    $scope.exampleData = [
+      {
+          "key": "Negative",
+          "color": "#d62728",
+          "values": [
+            ["Group A" , -1.8746444827653, "D"],
+
+            ["Group C" , -0.57072943117674, "D"],
+
+            ["Group E" , -0.72009071426284, "D"],
+
+            ["Group G" , -0.90152097798131, "D"],
+
+            ["Group I" , -0.055746319141851, "D"]
+          ]
+      },
+      {
+          "key": "Positive",
+          "color": "#1f77b4",
+          "values": [
+
+              ["Group B" , 16.756779544553, "D"],
+
+              ["Group D" , 8.6142352811805, "D"],
+
+              ["Group F" , 5.259101026956],
+
+              ["Group H" , 0],
+
+          ]
+      }
+    ];
+    $scope.tabs = [
+        { title:'Dynamic Title 1', content:'Dynamic content 1' },
+        { title:'Dynamic Title 2', content:'Dynamic content 2', disabled: true }
+      ];
     this.newArticle = {};
     $http.get('/api/articles').success(function(data){
       $scope.articles = data;

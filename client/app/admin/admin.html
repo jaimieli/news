@@ -1,4 +1,4 @@
-<body>
+<!-- <body> -->
 <!-- <header class="navbar navbar-bright navbar-fixed-top" role="banner">
   <div class="container">
     <div class="navbar-header">
@@ -29,6 +29,8 @@
   </div>
 </header> -->
 
+
+
 <div id="masthead">
   <div class="container">
     <div class="row">
@@ -50,7 +52,70 @@
     </div>
   </div><!-- /cont -->
 
+  <div class="container">
     <div class="row">
+      <div class="col-md-12">
+        <div class="top-spacer">
+        </div>
+      </div>
+    </div>
+  </div> <!-- container -->
+</div> <!-- masthead -->
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel">
+        <div class="panel-body">
+
+
+          <div id="wiki">
+            <h2>Wiki</h2>
+            <p>Cool Info</p>
+          </div>
+          <br></br>
+          <hr>
+
+          <div id="Sentiment">
+            <h2>Sentiment</h2>
+            <p>Sentiment Data</p>
+          </div>
+          <br></br>
+          <hr>
+
+          <div id="Articles">
+            <h2>Articles</h2>
+            <p>Articles List</p>
+          </div>
+          <br></br>
+          <hr>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    {{}}
+    <tabset>
+      <tab heading="Static title">Static content</tab>
+      <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+        {{tab.content}}
+      </tab>
+      <tab select="alertMe()">
+        <tab-heading>
+          <i class="glyphicon glyphicon-bell"></i> Alert!
+        </tab-heading>
+        I've got an HTML heading, and a select callback. Pretty cool!
+      </tab>
+    </tabset>
+  </div>
+</div>
+<!--     <div class="row">
       <div class="col-md-12">
         <div class="col-md-4">
           <div class="top-spacer">
@@ -76,27 +141,12 @@
               <h3>Name</h3>
               </div>
             </div> <!-- row -->
-            <hr>
-          </div><!--  nav sidebar -->
-        </div>
+            <!-- <hr>
+          </div -->><!--  nav sidebar -->
+     <!--    </div>
       </div>
     </div>
   </div>
-</div>
+</div>  -->
 
 
-
-<footer class="footer">
-  <div class="container">
-    <a href="http://twitter.com/lijaimie"><img src="../../assets/images/twitter-wrap.png" alt="Twitter Logo" class="social-icon"></a>
-    <a href="#"><img src="../../assets/images/facebook-wrap.png" alt="Facebook Logo" class="social-icon"></a>
-    <!-- special syntax is an HTML entity that makes the copyright symbol -->
-    <p>&copy; 2014 Jaimie Li</p>
-  </div>
-</footer>
-
-  <!-- script references -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </body>
-</html>

@@ -2,7 +2,6 @@
 
 angular.module('newsApp')
   .controller('AllgoogleCtrl', function ($scope, $http, socket, $sanitize, $sce) {
-
     $scope.sourceModel = [];
     $scope.entityModel = [];
     $http.get('/api/gTrends/getTrends').success(function(data){
@@ -23,6 +22,17 @@ angular.module('newsApp')
     $scope.fullObj = {externalIdProp: ''};
     $scope.entityCustomTexts = {buttonDefaultText: 'Select Entities'}
     $scope.sourceCustomTexts = {buttonDefaultText: 'Select Sources'}
+    $scope.toolTipBarChartContentFunction = function(){
+      return function(key, x, y, e, graph) {
+          return '<p>' + x + '</p>' +
+              '<p>' + y + '</p>'
+      }
+    }
+    $scope.barChartxAxisTickFormatFunction = function(){
+      return function() {
+        "";
+      }
+    }
     $scope.myData = [10,20,30,40,60, 80, 20, 50];
     $scope.fakeData = [
       {"key": "Group 0",
@@ -73,13 +83,13 @@ angular.module('newsApp')
     //         return '<strong>YO!' + y + '</strong>'
     //     }
     // }
-    $scope.stopStream = function(){
-      console.log("sending get to backend to stop stream");
-      $http.get('api/twitters/destroy').success(function(){
-        console.log('destroyed stream');
-      })
-      $scope.twitterData = [];
-    }
+    // $scope.stopStream = function(){
+    //   console.log("sending get to backend to stop stream");
+    //   $http.get('api/twitters/destroy').success(function(){
+    //     console.log('destroyed stream');
+    //   })
+    //   $scope.twitterData = [];
+    // }
     // $scope.allSelected = false;
 
     // $scope.selectText = "Select All";
@@ -238,6 +248,11 @@ angular.module('newsApp')
     $scope.setDisplay = function(){
       console.log('setting display to ')
       $scope.displayAll = true;
+      console.log("sending get to backend to stop stream");
+      $http.get('api/twitters/destroy').success(function(){
+        console.log('destroyed stream');
+      })
+      $scope.twitterData = [];
     }
     this.getNews = function(obj) {
       $scope.showTransition = true;
@@ -251,13 +266,61 @@ angular.module('newsApp')
         $scope.newsData = data;
         // wiki data
         $scope.newsData.wikiClean = $sce.trustAsHtml($scope.newsData.wiki[0].context);
+        // console.log('wikiClean: ', $scope.newsData.wikiClean);
+        // if ($scope.newsData.wikiClean === 'Not Available') {
+        //   $scope.displayWiki = false
+        // } else {
+        //   $scope.displayWiki = true;
+        // }
+        // console.log('displayWiki: ', $scope.display);
         // setting undefined doc sentiment scores to unavailable
         $scope.newsData.cleanData.forEach(function(outlet){
           if (outlet.docSentiment === "undefined") {
             outlet.docSentiment === "Unavailable";
           }
         })
-        // mapping data to display in chart
+        // mapping data to display in horizontal bar chart
+        $scope.newsData.barChart =  [];
+        var negObj = {'key': 'Negative', 'color': '#d62728'};
+        var posObj = {'key': 'Positive', 'color': '#1f77b4'};
+
+        var negValues = [];
+        var posValues = [];
+        // iterate through docSentiment here
+        $scope.newsData.sources.forEach(function(el){
+          var valArr = []
+          if (el.docSentiment < 0) {
+            valArr.push(el.docSentiment);
+            valArr.push(el.cleanLabel);
+            valArr.push(el.label)
+            negValues.push(valArr);
+          } else {
+            valArr.push(el.docSentiment);
+            valArr.push(el.cleanLabel);
+            valArr.push(el.label);
+            posValues.push(valArr);
+          }
+        })
+        var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+
+        var counter = 0;
+        negValues.forEach(function(el){
+          el.unshift(alphabet[counter]);
+          counter++;
+        })
+
+        posValues.forEach(function(el){
+          el.unshift(alphabet[counter]);
+          counter++;
+        })
+
+        negObj['values'] = negValues;
+        posObj['values'] = posValues;
+
+        $scope.newsData.barChart.push(negObj);
+        $scope.newsData.barChart.push(posObj);
+
+        // mapping data to display in scatter chart
         $scope.newsData.display = [];
         $scope.newsData.entities = [];
         var counter = 1;

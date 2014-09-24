@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('a1fba049c2c8165b04e481a61b9ce0bf8ae56eb2');
+var alchemy = new AlchemyAPI('ac8938a75810f1a8cf573a5c841f24a16c376489');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -19,7 +19,8 @@ exports.getArticle = function(req, res) {
       dataArrColl = [],
       cleanData,
       context,
-      dataObj = {};
+      dataObj = {},
+      docSentimentSum;
   var query = req.body.property1.text;
   var topic = req.body.property1.text;
   topic = topic.replace(' ', '+');
@@ -55,11 +56,14 @@ exports.getArticle = function(req, res) {
     };
 
     var getSentiment = function(callback) {
+      docSentimentSum = 0;
       async.each(cleanData, function(article, callback) {
+
         alchemy.sentiment(article.href, {}, function(err, response){
           if(err) console.log(err);
           article.docSentiment = response.docSentiment;
           article.docSentiment.score = Number(article.docSentiment.score);
+          docSentimentSum += Number(article.docSentiment.score);
           callback();
         })
       }, function(err){
@@ -158,6 +162,10 @@ exports.getArticle = function(req, res) {
         sourceObj['label'] = el.href;
         sourceObj['id'] = counter
         sourceObj['cleanLabel'] = getHostName(el.href);
+        if (el.docSentiment.score === null) {
+          el.docSentiment.score = 0;
+        }
+        sourceObj['docSentiment'] = el.docSentiment.score;
         counter++;
         dataObj.sources.push(sourceObj);
       })
@@ -199,6 +207,7 @@ exports.getArticle = function(req, res) {
   var doneTasks = function(err, results) {
     if(err) console.log(err);
     dataObj.cleanData = cleanData;
+    dataObj.docSentimentAvg = docSentimentSum / 10;
     res.send(dataObj);
   };
 

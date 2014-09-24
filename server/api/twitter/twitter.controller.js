@@ -63,6 +63,7 @@ exports.search = function(socket) {
       socket.emit('twitter:save', turl);
       // socket.emit('twitter:save', data);
       console.log("new tweet about: ", interest);
+      console.log("tweet text: ", turl)
       res.send(200);
     });
   });

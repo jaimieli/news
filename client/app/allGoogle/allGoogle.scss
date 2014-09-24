@@ -1,6 +1,18 @@
 /* override bootstrap styles */
 @import url('http://fonts.googleapis.com/css?family=Oswald:300,400:latin,latin-ext');
+.negArticleButton {
+  background-color: #d62728;
+}
+.posArticleButton {
+  background-color: #1f77b4;
+}
 
+.articleButtons {
+  margin-left: 50px;
+}
+#barChart {
+  position: center;
+}
 .navbar-form input, .form-inline input {
   width:auto;
 }
@@ -47,6 +59,7 @@ footer {
   border-color:#000022;
   color:#efefff;
   min-height:127px;
+  height: 250px;
 }
 
 #topPanel {
