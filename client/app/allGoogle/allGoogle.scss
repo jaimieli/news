@@ -24,7 +24,7 @@ body {
   background-color:#efefef;
 }
 
-h1,h2,h3,.highlight,.navbar a,#masthead h4 {
+.jumbotron, tab, h1,h2,h3,.highlight,.navbar a,#masthead h4,{
   font-family: arial narrow,sans-serif;
 }
 
@@ -222,4 +222,23 @@ div.container {
 
     }
   }
+}
+
+div#transitionDiv {
+  background-color: #111166;
+  color: white;
+  text-align: center;
+  font: 50px;
+}
+
+div#transitionHeader{
+  background-color: #111166;
+}
+
+div#transitionContainer{
+  background-color: #111166;
+}
+
+div#transitionFooter{
+  background-color: #111166;
 }

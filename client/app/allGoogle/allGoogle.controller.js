@@ -17,16 +17,25 @@ angular.module('newsApp')
       $scope.displayOverall = true;
       $scope.displayAnalysis = false;
       $scope.displayContext= false;
+      $scope.displayArticles = false;
     };
     $scope.clickAnalysis = function(){
       $scope.displayOverall = false;
       $scope.displayAnalysis = true;
       $scope.displayContext= false;
+      $scope.displayArticles = false;
     };
     $scope.clickContext = function() {
       $scope.displayOverall = false;
       $scope.displayAnalysis = false;
       $scope.displayContext= true;
+      $scope.displayArticles = false;
+    }
+    $scope.clickArticle = function() {
+      $scope.displayArticles = true;
+      $scope.displayOverall = false;
+      $scope.displayAnalysis = false;
+      $scope.displayContext= false;
     }
     // end of setting views for single display page
     $scope.getTwitter = function(obj){
@@ -384,9 +393,10 @@ angular.module('newsApp')
         $scope.selectAllSources();
         console.log($scope.newsData);
         $scope.showTransition = false;
-        $scope.displayOverall = true;
+        $scope.displayOverall = false;
         $scope.displayAnalysis = false;
         $scope.displayContext = false;
+        $scope.displayArticles = true;
       });
     };
     this.showEntities = function(article) {

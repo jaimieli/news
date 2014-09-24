@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('292dd0f8f636420d89276c2ae42759faecdc61a9');
+var alchemy = new AlchemyAPI('49440d07c88d21ea851a962a4ed01a07b319f73b');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -48,6 +48,7 @@ exports.getArticle = function(req, res) {
         alchemy.text(article.href, {}, function(err, response){
           if(err) console.log(err);
           article.body = response.text;
+          console.log('article.body: ', article.body);
           callback();
         })
       }, function(err){
@@ -60,13 +61,15 @@ exports.getArticle = function(req, res) {
       docSentimentSum = 0;
       docSentimentArr = [];
       async.each(cleanData, function(article, callback) {
-
         alchemy.sentiment(article.href, {}, function(err, response){
-          if(err) console.log(err);
-          article.docSentiment = response.docSentiment;
-          article.docSentiment.score = Number(article.docSentiment.score);
-          docSentimentSum += Number(article.docSentiment.score);
-          docSentimentArr.push(Number(article.docSentiment.score))
+          if (response.docSentiment) {
+            if(err) console.log(err);
+            article.docSentiment = response.docSentiment;
+            console.log('article.docSentiment: ', article.docSentiment);
+            article.docSentiment.score = Number(article.docSentiment.score);
+            docSentimentSum += Number(article.docSentiment.score);
+            docSentimentArr.push(Number(article.docSentiment.score))
+          }
           callback();
         })
       }, function(err){
@@ -83,27 +86,30 @@ exports.getArticle = function(req, res) {
           article.entitySentiment = [];
           article.entities = [];
           article.scores = [];
+          console.log('response: ', response);
 
           response.entities.forEach(function(el){
-            var score = el.sentiment.score || "0";
-            var entity = el.text;
-            var obj = {};
+            if (el.sentiment) {
+              var score = el.sentiment.score || "0";
+              var entity = el.text;
+              var obj = {};
 
-            // data cleaning --> sentimentData obj
-            var sentimentObj = {};
-            sentimentObj["score"]= score;
-            sentimentObj["source"]= article.href;
-            sentimentObj["frequency"] = el.count;
-            sentimentObj["type"] = el.sentiment.type;
-            if (!dataObj.sentimentData[entity]) {
-              dataObj.sentimentData[entity] = [];
+              // data cleaning --> sentimentData obj
+              var sentimentObj = {};
+              sentimentObj["score"]= score;
+              sentimentObj["source"]= article.href;
+              sentimentObj["frequency"] = el.count;
+              sentimentObj["type"] = el.sentiment.type;
+              if (!dataObj.sentimentData[entity]) {
+                dataObj.sentimentData[entity] = [];
+              }
+              dataObj.sentimentData[entity].push(sentimentObj);
+              // end of data cleaning
+              obj[entity] = Number(score);
+              article.entitySentiment.push(obj);
+              article.entities.push(entity);
+              article.scores.push(Number(score));
             }
-            dataObj.sentimentData[entity].push(sentimentObj);
-            // end of data cleaning
-            obj[entity] = Number(score);
-            article.entitySentiment.push(obj);
-            article.entities.push(entity);
-            article.scores.push(Number(score));
           })
           // article.entities.forEach(function(el){
           //   article.entitiesArr.push(el.text)
@@ -165,12 +171,14 @@ exports.getArticle = function(req, res) {
         sourceObj['label'] = el.href;
         sourceObj['id'] = counter
         sourceObj['cleanLabel'] = getHostName(el.href);
-        if (el.docSentiment.score === null) {
-          el.docSentiment.score = 0;
+        if (el.docSentiment) {
+          if (el.docSentiment.score === null) {
+            el.docSentiment.score = 0;
+          }
+          sourceObj['docSentiment'] = el.docSentiment.score;
+          counter++;
+          dataObj.sources.push(sourceObj);
         }
-        sourceObj['docSentiment'] = el.docSentiment.score;
-        counter++;
-        dataObj.sources.push(sourceObj);
       })
       var hash = {};
       dataObj.sources.forEach(function(el){
