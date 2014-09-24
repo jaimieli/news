@@ -1,16 +1,16 @@
 /* override bootstrap styles */
 @import url('http://fonts.googleapis.com/css?family=Oswald:300,400:latin,latin-ext');
 
-.negArticleButton {
-  background-color: #d62728;
-}
-.posArticleButton {
-  background-color: #1f77b4;
-}
+// .negArticleButton {
+//   background-color: #d62728;
+// }
+// .posArticleButton {
+//   background-color: #1f77b4;
+// }
 
-.articleButtons {
-  // margin-left: 30px;
-}
+// .articleButtons {
+//   // margin-left: 30px;
+// }
 #barChart {
   position: center;
 }
@@ -61,7 +61,6 @@ footer {
   border-color:#000022;
   color:#efefff;
   min-height:127px;
-  height: 250px;
 }
 
 #topPanel {
@@ -203,4 +202,24 @@ a,a:hover {
 
 .form-inline > * {
    margin: 5px 20px 5px 0px;
+}
+
+div.container {
+  div.row {
+    div.col-md-12#tabbed-content {
+      div.panel {
+        div.panel-body#tabbed-panel {
+          margin: 0px 15px;
+        }
+      }
+    }
+  }
+}
+div.container {
+  div.row {
+    div.col-md-12#tabbed-content {
+      top: -25px;
+
+    }
+  }
 }

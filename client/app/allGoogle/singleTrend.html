@@ -23,11 +23,11 @@
         </h1>
       </div>
       <div class="col-md-6">
-        <div class="well well-lg">
+        <div style="height: 180px"class="well well-lg">
           <div class="row">
             <div class="col-sm-12">
               <ul>
-                <li ng-repeat="twitter in twitterData | limitTo: 4">
+                <li ng-repeat="twitter in twitterData | limitTo: 3">
                   <p ng-bind-html="twitter"></p>
                 </li>
               </ul>
@@ -53,10 +53,9 @@
       <div class="panel">
         <div class="panel-body">
           <tabset>
-            <tab heading="Overvall Sentiment" ng-click="display()">
-            </tab>
-            <tab heading="Sentiment Breakdown">Analysis 1</tab>
-            <tab heading="Context">Analysis 2</tab>
+            <tab heading="Overall Sentiment" ng-click="clickOverall()"></tab>
+            <tab heading="Sentiment Breakdown" ng-click="clickAnalysis()"></tab>
+            <tab ng-if="newsData.wiki[0].context!=='Not Available'" heading="Context" ng-click="clickContext()"></tab>
           </tabset>
         </div>
       </div>
@@ -66,9 +65,9 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" id="tabbed-content">
       <div class="panel">
-        <div class="panel-body">
+        <div class="panel-body" id="tabbed-panel">
 <!--           <div>
             <h2>Twitter Feed</h2>
             <ul>
@@ -86,39 +85,44 @@
             <div>Using Filter: {{newsData.wiki[0].context | htmlToPlainText}}
             </div>
             <h2>Using SCE</h2> -->
-          <div ng-if="newsData.wiki[0].context!=='Not Available'">
-            <h2>Context</h2>
-            <div ng-bind-html="newsData.wikiClean">
-            </div>
-          </div>
-          <br></br>
-          <hr>
 
-          <form class="form-inline" name="myForm">
-            <div class="form-group">
-              <h2>Sentiment Analysis</h2>
-              <h4>Select News Source(s)</h4>
-  <!--             <p>(listed alphabetically)</p> -->
-              <button ng-click="selectAllSources()" class="btn btn-danger">{{selectSourcesText}}</button>
-              <p ng-if="sourceChosen === 0">Please select at least one source.</p>
-              <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
-<!--                 <button ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}</button> -->
-                <label class="checkbox-inline">
-                <input type="checkbox" id="source-{{$index}}" value="{{source.label}}" ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}
-                </label>
+          <div ng-if="displayContext">
+            <div ng-if="newsData.wiki[0].context!=='Not Available'">
+              <h2>Context</h2>
+              <div ng-bind-html="newsData.wikiClean">
               </div>
-            </div>
-            <div class="form-group">
-              <h4>Select Sentiment Type</h4>
-              <button ng-click="selectAllTypes()" class="btn btn-danger">{{selectTypesText}}</button>
-              <p ng-if="typeChosen === 0">Please select at least one type.</p>
-              <div ng-repeat="item in newsData.sentimentTypes">
-                <label class="checkbox-inline">
-                <input type="checkbox" id="type-{{$index}}" value="item.type" ng-click="clicked(item)" ng-model="item.selected">{{item.type}}
-                </label>
-              </div>
-            </div>
-          </form>
+            </div> <!-- ng-if -->
+            <br></br>
+            <hr>
+          </div> <!--displayContext-->
+
+          <div ng-if="displayAnalysis">
+            <form class="form-inline" name="myForm">
+              <div class="form-group">
+                <h2>Sentiment Analysis</h2>
+                <h4>Select News Source(s)</h4>
+    <!--             <p>(listed alphabetically)</p> -->
+                <button ng-click="selectAllSources()" class="btn btn-danger">{{selectSourcesText}}</button>
+                <p ng-if="sourceChosen === 0">Please select at least one source.</p>
+                <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
+  <!--                 <button ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}</button> -->
+                  <label class="checkbox-inline">
+                  <input type="checkbox" id="source-{{$index}}" value="{{source.label}}" ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}
+                  </label>
+                </div> <!-- ng-repeat -->
+              </div><!-- form-group -->
+              <div class="form-group">
+                <h4>Select Sentiment Type</h4>
+                <button ng-click="selectAllTypes()" class="btn btn-danger">{{selectTypesText}}</button>
+                <p ng-if="typeChosen === 0">Please select at least one type.</p>
+                <div ng-repeat="item in newsData.sentimentTypes">
+                  <label class="checkbox-inline">
+                  <input type="checkbox" id="type-{{$index}}" value="item.type" ng-click="clicked(item)" ng-model="item.selected">{{item.type}}
+                  </label>
+                </div> <!-- ng-repeat -->
+              </div> <!-- form-group -->
+            </form>
+            <br></br>
             <nvd3-scatter-chart
                 data="newsData.d3"
                 id="sentimentComparison"
@@ -144,9 +148,12 @@
               <!-- <h4 class="sentimentScore">Overall Sentiment Score: {{ outlet.docSentiment.score }}</h4> -->
               <p>{{ outlet.body | limitTo:500 }}<p>
               <!-- <p>{{ outlet.href }}<p> -->
-            </div>
+            </div><!--  ng-repeat -->
             <br></br>
             <hr>
+          </div><!-- displayAnalysis -->
+
+          <div ng-if="displayOverall">
             <h2>Overall Sentiment</h2>
             <h4>Average Overall Sentiment: {{newsData.docSentimentAvg}}</h4>
             <h4>Range: {{newsData.docSentimentMin}} to {{newsData.docSentimentMax}} </h4>
@@ -176,12 +183,12 @@
                   <div class="articleButtons">
                     <div ng-repeat="arrN in newsData.barChart[0].values">
                       <div class="row">
-                        <button class="btn negArticleButton"><a style="color: white" target="_blank" href="{{arrN[3]}}">{{arrN[0]}}: {{arrN[2]}}</a></button>
+                        <button class="btn btn-danger"><a style="color: white" target="_blank" href="{{arrN[3]}}">{{arrN[0]}}: {{arrN[2]}}</a></button>
                       </div> <!-- col-md-1 -->
                     </div> <!-- ng-repeat -->
                     <div ng-repeat="arrP in newsData.barChart[1].values">
                       <div class="row">
-                        <button class="btn posArticleButton"><a style="color: white" target="_blank" href="{{arrP[3]}}">{{arrP[0]}}: {{arrP[2]}}</a></button>
+                        <button class="btn btn-primary"><a style="color: white" target="_blank" href="{{arrP[3]}}">{{arrP[0]}}: {{arrP[2]}}</a></button>
                       </div><!-- col-md-1 -->
                     </div><!-- ng-repeat -->
                   </div><!-- articleButtons -->
@@ -190,6 +197,7 @@
             </div><!-- col-md-12 -->
             <br></br>
             <hr>
+          </div><!-- displayOverall -->
 
         </div> <!-- panel-body -->
       </div> <!-- panel -->

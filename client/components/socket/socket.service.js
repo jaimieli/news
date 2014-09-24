@@ -36,7 +36,7 @@ angular.module('newsApp')
          */
         socket.on(modelName + ':save', function (item) {
           console.log("twitter:save gets emitted");
-          if (array.length > 4) {
+          if (array.length > 3) {
             array.shift();
             array.push(item);
           } else {
