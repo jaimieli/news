@@ -9,6 +9,28 @@ angular.module('newsApp')
                 '<p>' +  y + ' at ' + x + '</p>'
       }
     }
+    $scope.xAxisTickFormatFunction = function(){
+    return function(d){
+        return d3.time.format('%b')(new Date(d));
+    }
+}
+    $scope.exampleData2 = {
+      "title": "Revenue",
+      "subtitle": "US$, in thousands",
+      "ranges": [-1, 1],
+      "measures": [-0.5, 0.8],
+      "markers": [.6]
+    }
+     $scope.exampleData3 = [
+                {
+                  "key": "Series 1",
+                  "values": [
+                    ["Jam", 1],
+                    ["Jam", 3],
+                    ["Jam", -2]
+                  ]
+                }
+            ];
     $scope.exampleData = [
       {
           "key": "Negative",

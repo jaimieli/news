@@ -24,8 +24,7 @@ angular.module('newsApp')
     $scope.sourceCustomTexts = {buttonDefaultText: 'Select Sources'}
     $scope.toolTipBarChartContentFunction = function(){
       return function(key, x, y, e, graph) {
-          return '<p>' + x + '</p>' +
-              '<p>' + y + '</p>'
+          return '<p>' + y + '</p>'
       }
     }
     $scope.barChartxAxisTickFormatFunction = function(){

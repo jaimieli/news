@@ -53,13 +53,10 @@
       <div class="panel">
         <div class="panel-body">
           <tabset>
-            <tab heading="Overview" ng-click="display()">
-              <h2>Score Overview</h2>
-              <h4>Average Overall Sentiment: {{newsData.docSentimentAvg}}</h4>
-              <h4>Insert chart of some sort</h4>
+            <tab heading="Overvall Sentiment" ng-click="display()">
             </tab>
-            <tab heading="Sentiment Breakdown by Article">Analysis 1</tab>
-            <tab heading="Sentiment Breakdown by Entity">Analysis 2</tab>
+            <tab heading="Sentiment Breakdown">Analysis 1</tab>
+            <tab heading="Context">Analysis 2</tab>
           </tabset>
         </div>
       </div>
@@ -102,7 +99,7 @@
               <h2>Sentiment Analysis</h2>
               <h4>Select News Source(s)</h4>
   <!--             <p>(listed alphabetically)</p> -->
-              <button ng-click="selectAllSources()" class="btn-danger">{{selectSourcesText}}</button>
+              <button ng-click="selectAllSources()" class="btn btn-danger">{{selectSourcesText}}</button>
               <p ng-if="sourceChosen === 0">Please select at least one source.</p>
               <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
 <!--                 <button ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}</button> -->
@@ -113,7 +110,7 @@
             </div>
             <div class="form-group">
               <h4>Select Sentiment Type</h4>
-              <button ng-click="selectAllTypes()" class="btn-danger">{{selectTypesText}}</button>
+              <button ng-click="selectAllTypes()" class="btn btn-danger">{{selectTypesText}}</button>
               <p ng-if="typeChosen === 0">Please select at least one type.</p>
               <div ng-repeat="item in newsData.sentimentTypes">
                 <label class="checkbox-inline">
@@ -142,51 +139,55 @@
             <hr>
 
             <br>
-            <div ng-repeat="outlet in newsData.cleanData | limitTo:10 | filter: {selected: 'true'}">
-              <h2><a href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
-              <h4 class="sentimentScore">Overall Sentiment Score: {{ outlet.docSentiment.score }}</h4>
+            <div ng-repeat="outlet in newsData.cleanData | limitTo:10 | filter: {selected: 'true'} | orderBy: 'href' ">
+              <h2><a target="_blank" href="{{ outlet.href }}">{{ outlet.text }}</a></h2>
+              <!-- <h4 class="sentimentScore">Overall Sentiment Score: {{ outlet.docSentiment.score }}</h4> -->
               <p>{{ outlet.body | limitTo:500 }}<p>
-              <p>{{ outlet.href }}<p>
+              <!-- <p>{{ outlet.href }}<p> -->
             </div>
             <br></br>
             <hr>
-            <div id="barChart">
-              <nvd3-multi-bar-horizontal-chart
-                data="newsData.barChart"
-                  id="exampleId"
-                  showXAxis="true"
-                  showYAxis="true"
-                  yaxislabel="Sentiment Score"
-                  width="850"
-                  height="350"
-                  interactive="true"
-                  tooltips="true"
-                  showLegend="true"
-                  tooltipcontent="toolTipBarChartContentFunction()"
-                  forceY="[-1,1]"
-                  >
-                <svg></svg>
-              </nvd3-multi-bar-horizontal-chart>
-            </div>
-            <div class="container">
-              <div class="articleButtons">
-                <div class="row">
-                  <div ng-repeat="arrN in newsData.barChart[0].values">
-                    <div class="col-md-1">
-                      <button class="btn negArticleButton"><a href="{{arrN[3]}}">{{arrN[0]}}</a></button>
-                    </div> <!-- col-md-1 -->
-                  </div> <!-- ng-repeat -->
-                </div> <!-- row -->
-                <br></br>
-                <div class="row">
-                  <div ng-repeat="arrP in newsData.barChart[1].values">
-                    <div class="col-md-1">
-                      <button class="btn posArticleButton"><a href="{{arrP[3]}}">{{arrP[0]}}</a></button>
-                    </div><!-- col-md-1 -->
-                  </div><!-- ng-repeat -->
-                </div><!-- row -->
-              </div><!-- articleButtons -->
-            </div>
+            <h2>Overall Sentiment</h2>
+            <h4>Average Overall Sentiment: {{newsData.docSentimentAvg}}</h4>
+            <h4>Range: {{newsData.docSentimentMin}} to {{newsData.docSentimentMax}} </h4>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-9">
+                  <div id="barChart">
+                    <nvd3-multi-bar-horizontal-chart
+                      data="newsData.barChart"
+                        id="exampleId"
+                        showXAxis="true"
+                        showYAxis="true"
+                        yaxislabel="Sentiment Score"
+                        width="750"
+                        height="350"
+                        interactive="true"
+                        tooltips="true"
+                        showLegend="true"
+                        tooltipcontent="toolTipBarChartContentFunction()"
+                        forceY="[-1,1]"
+                        >
+                      <svg></svg>
+                    </nvd3-multi-bar-horizontal-chart>
+                  </div> <!--barChart -->
+                </div><!-- col-md-9 -->
+                <div class="col-md-3">
+                  <div class="articleButtons">
+                    <div ng-repeat="arrN in newsData.barChart[0].values">
+                      <div class="row">
+                        <button class="btn negArticleButton"><a style="color: white" target="_blank" href="{{arrN[3]}}">{{arrN[0]}}: {{arrN[2]}}</a></button>
+                      </div> <!-- col-md-1 -->
+                    </div> <!-- ng-repeat -->
+                    <div ng-repeat="arrP in newsData.barChart[1].values">
+                      <div class="row">
+                        <button class="btn posArticleButton"><a style="color: white" target="_blank" href="{{arrP[3]}}">{{arrP[0]}}: {{arrP[2]}}</a></button>
+                      </div><!-- col-md-1 -->
+                    </div><!-- ng-repeat -->
+                  </div><!-- articleButtons -->
+                </div><!-- col-md-3 -->
+              </div><!-- row -->
+            </div><!-- col-md-12 -->
             <br></br>
             <hr>
 

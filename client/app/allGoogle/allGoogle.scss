@@ -1,5 +1,6 @@
 /* override bootstrap styles */
 @import url('http://fonts.googleapis.com/css?family=Oswald:300,400:latin,latin-ext');
+
 .negArticleButton {
   background-color: #d62728;
 }
@@ -8,7 +9,7 @@
 }
 
 .articleButtons {
-  margin-left: 50px;
+  // margin-left: 30px;
 }
 #barChart {
   position: center;
@@ -52,6 +53,7 @@ footer {
   color:#fefeff;
   margin-top:50px;
 }
+
 
 #masthead .well {
   margin-top:31px;

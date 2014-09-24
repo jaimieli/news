@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('ac8938a75810f1a8cf573a5c841f24a16c376489');
+var alchemy = new AlchemyAPI('759fe821ebc2338bd85f77f28e47ac55d3af7a0a');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -20,7 +20,8 @@ exports.getArticle = function(req, res) {
       cleanData,
       context,
       dataObj = {},
-      docSentimentSum;
+      docSentimentSum,
+      docSentimentArr;
   var query = req.body.property1.text;
   var topic = req.body.property1.text;
   topic = topic.replace(' ', '+');
@@ -57,6 +58,7 @@ exports.getArticle = function(req, res) {
 
     var getSentiment = function(callback) {
       docSentimentSum = 0;
+      docSentimentArr = [];
       async.each(cleanData, function(article, callback) {
 
         alchemy.sentiment(article.href, {}, function(err, response){
@@ -64,6 +66,7 @@ exports.getArticle = function(req, res) {
           article.docSentiment = response.docSentiment;
           article.docSentiment.score = Number(article.docSentiment.score);
           docSentimentSum += Number(article.docSentiment.score);
+          docSentimentArr.push(Number(article.docSentiment.score))
           callback();
         })
       }, function(err){
@@ -207,7 +210,11 @@ exports.getArticle = function(req, res) {
   var doneTasks = function(err, results) {
     if(err) console.log(err);
     dataObj.cleanData = cleanData;
-    dataObj.docSentimentAvg = docSentimentSum / 10;
+    dataObj.docSentimentAvg = Math.round(docSentimentSum/10 * 10) / 10;
+    var max = Math.max.apply(null, docSentimentArr);
+    dataObj.docSentimentMax = Math.round(max * 10) / 10;
+    var min = Math.min.apply(null, docSentimentArr);
+    dataObj.docSentimentMin = Math.round(min * 10) / 10;
     res.send(dataObj);
   };
 

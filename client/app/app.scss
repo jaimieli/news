@@ -19,6 +19,14 @@ html, body {
       -webkit-font-smoothing: antialiased !important;
 }
 
+.panel-body a:link {
+  color: #0E0E90;
+}
+
+#masthead a:link {
+  color: #2bb3d5;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'account/login/login.scss';
