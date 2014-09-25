@@ -45,18 +45,19 @@
       </div>
     </div>
   </div> <!-- container -->
+
 </div> <!-- masthead -->
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" id="tabs">
       <div class="panel">
         <div class="panel-body">
           <tabset>
             <tab heading="Top Articles" ng-click="clickArticle()"></tab>
             <tab heading="Overall Sentiment" ng-click="clickOverall()"></tab>
-            <tab heading="Sentiment Breakdown 1" ng-click="clickAnalysis()"></tab>
-            <tab heading="Sentiment Breakdown 2" ng-click="clickAnalysis2()"></tab>
+<!--             <tab heading="Sentiment Breakdown 1" ng-click="clickAnalysis()"></tab> -->
+            <tab heading="Sentiment Breakdown" ng-click="clickAnalysis2()"></tab>
             <tab ng-if="newsData.wiki[0].context!=='Not Available'" heading="More Info" ng-click="clickContext()"></tab>
           </tabset>
         </div>
@@ -184,6 +185,14 @@
                   </label>
                 </div> <!-- ng-repeat -->
               </div> <!-- form-group -->
+              <div class="col-md-6">
+                <h4>Click to View Article</h4>
+                <ul class="list-unstyled">
+                  <li ng-repeat="source in newsData.sources">
+                    <a target="_blank" href="{{source.label}}">{{source.cleanLabel}}</a>
+                  </li>
+                </ul>
+              </div>
             </div> <!-- row -->
 
             <br></br>
