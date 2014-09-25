@@ -352,9 +352,10 @@ angular.module('newsApp')
             key: notFilteredArr[i].key,
             values: filteredArr
           };
-          if (newObj2.values.length !== 0){
-            newsFilteredArr.push(newObj2);
-          }
+          // if (newObj2.values.length !== 0){
+          //   newsFilteredArr.push(newObj2);
+          // }
+          newsFilteredArr.push(newObj2);
         }
         $scope.newsData.d3_2 = [];
         $scope.newsData.d3_2 = newsFilteredArr;
@@ -384,6 +385,7 @@ angular.module('newsApp')
         console.log('destroyed stream');
       })
       $scope.twitterData = [];
+      $scope.newsData = {};
     }
     this.getNews = function(obj) {
       $scope.showTransition = true;
