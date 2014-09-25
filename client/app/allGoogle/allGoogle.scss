@@ -179,7 +179,6 @@ a,a:hover{
   position: absolute;
   top: 0;
   z-index: 1;
-  width:100%;
   opacity:.9;
   padding:6px;
   color:#fff;
@@ -282,9 +281,24 @@ footer p {
 
 .navbar p {
   line-height: 50px;
-  font-weight: 400;
+  font-weight: 400px;
+  font-family: 'Open Sans', sans-serif
 }
 
 a {
   color: #223344
+}
+
+.label-search {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+  background-color: rgba(63, 68, 73, 0.7);;
 }
