@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('fd4b9e657d83ed2455f21228009313a4db8a2c75');
+var alchemy = new AlchemyAPI('1f3073ee65e7aa4f9f744969132335c6a6eaf9f5');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 

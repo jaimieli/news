@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <button ng-click="setDisplay(true)" style="background: none; border: none; margin-top: 10px">Home</button>
+      <p><a ng-click="setDisplay(true)" style="background: none; border: none; margin-top: 10px; font-family: 'Open Sans'">Home</a></p>
 <!--       <a href="/allGoogle" class="navbar-brand">Home</a> -->
 <!--       <button ng-click="stopStream()">Stop Stream</button> -->
     </div>
@@ -101,6 +101,7 @@
 
           <div ng-if="displayContext">
             <div ng-if="newsData.wiki[0].context!=='Not Available'">
+              <h4>Wikipedia</h4>
               <div ng-bind-html="newsData.wikiClean">
               </div>
             </div> <!-- ng-if -->

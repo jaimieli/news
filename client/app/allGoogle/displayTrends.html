@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
       </button>
 <!--       <a href="/allGoogle" class="navbar-brand">Home</a> -->
-      <button ng-click="displayView===true" style="background: none; border: none; margin-top: 10px;">Home</button>
+      <p><a ng-click="setDisplay()" style="font-family: 'Open Sans'">Home</a></p>
 <!--     </div>
     <nav class="collapse navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
@@ -73,15 +73,14 @@
                 <h3 ng-click="google.getNews(trend)">{{$index + 1}}. {{ trend.property1.text }}</h3>
                 <div class="row">
                   <div class="col-xs-9">
-                  <h4><span ng-click="google.getNews(trend)" class="label label-default">{{ trend.property2 }} searches</span></h4><h4>
-                <!--   <button style="font-family:courier,'new courier';" ng-click="getTwitter(trend)" class="text-muted">Twitter</a></button>
-                  </h4> -->
+                  <h4><span ng-click="google.getNews(trend)" class="label label-default label-search">{{ trend.property2 }} searches</span></h4>
                   </div> <!-- col-xs-9 -->
                   <div class="col-xs-3">
                   </div> <!-- col-xs-3 -->
                 </div> <!-- row -->
               </div><!--  col-md-10 -->
             </div><!-- div id -->
+          <span style="height: 10px"></span>
           <hr>
           </div> <!-- ng-repeat trends -->
         </div> <!-- panel-body -->

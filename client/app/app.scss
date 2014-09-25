@@ -20,11 +20,15 @@ html, body {
 }
 
 .panel-body a:link {
-  color: #0E0E90;
+  color: rgb(53,53,103);
 }
 
 #masthead a:link {
   color: #2bb3d5;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
 }
 
 // Component styles are injected through grunt

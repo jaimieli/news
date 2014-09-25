@@ -24,8 +24,8 @@ body {
   background-color:#efefef;
 }
 
-.jumbotron, tab, h1,h2,h3,.highlight,.navbar a,#masthead h4,{
-  font-family: arial narrow,sans-serif;
+#masthead, tab, h1,h2,h3,.highlight,.navbar a, footer{
+  font-family: 'Open Sans', sans-serif;
 }
 
 footer {
@@ -45,21 +45,28 @@ footer {
   min-height:199px;
   background-color:#000044;
   color:#aaaacc;
+  background-size: 100%;
+  background-image: url('../../assets/images/news.jpg');
+  background-position-y: -660px;
 }
 
 #masthead h1 {
   font-size: 55px;
   line-height: 1;
-  color:#fefeff;
+  // color:#fefeff;
+  color: white;
   margin-top:50px;
 }
 
 
 #masthead .well {
   margin-top:31px;
-  background-color:#111166;
-  border-color:#000022;
-  color:#efefff;
+  // background-color:#111166;
+  // border-color:#000022;
+  // color:#efefff;
+  border: 0px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #111666;
   min-height:127px;
 }
 
@@ -81,6 +88,8 @@ footer {
 .top-spacer {
   background-color:#ffffff;
   height:40px;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
 }
 
 a,a:hover{
@@ -99,10 +108,11 @@ a,a:hover{
 }
 
 .navbar-bright {
-  background-color:#111166;
+  background-color: rgba(63, 68, 73, 0.9);
   color:#fff;
   margin-bottom: 0;
   border-width: 0;
+  height: 50px;
 }
 
 .navbar-bright a, .navbar-bright .navbar-brand, #masthead h4 {
@@ -173,6 +183,9 @@ a,a:hover{
   opacity:.9;
   padding:6px;
   color:#fff;
+  background-color: rgba(86, 94, 102, 0.6);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400px;
 }
 
 .btn-twitter {background-color:#4099FF;color:#fff;}
@@ -218,7 +231,7 @@ div.container {
 div.container {
   div.row {
     div.col-md-12#tabbed-content {
-      top: -25px;
+      top: -20px;
 
     }
   }
@@ -249,4 +262,29 @@ div#transitionFooter{
   border: none;
   margin-left: -10px;
   outline: none;
+}
+
+.story-title img {
+  margin-left: 15px;
+}
+
+hr {
+  margin: 30px 15px;
+}
+
+#tabbed-panel h4 {
+  font-weight: 600;
+}
+
+footer p {
+  margin-top: 6px;
+}
+
+.navbar p {
+  line-height: 50px;
+  font-weight: 400;
+}
+
+a {
+  color: #223344
 }
