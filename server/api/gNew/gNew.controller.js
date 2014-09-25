@@ -5,7 +5,7 @@ var Gnew = require('./gNew.model');
 var request = require('request');
 var async = require('async');
 var AlchemyAPI = require('alchemy-api');
-var alchemy = new AlchemyAPI('49440d07c88d21ea851a962a4ed01a07b319f73b');
+var alchemy = new AlchemyAPI('fd4b9e657d83ed2455f21228009313a4db8a2c75');
 var wikipedia = require('wikipedia-js');
 var _ = require('underscore');
 
@@ -48,7 +48,6 @@ exports.getArticle = function(req, res) {
         alchemy.text(article.href, {}, function(err, response){
           if(err) console.log(err);
           article.body = response.text;
-          console.log('article.body: ', article.body);
           callback();
         })
       }, function(err){
@@ -65,7 +64,6 @@ exports.getArticle = function(req, res) {
           if (response.docSentiment) {
             if(err) console.log(err);
             article.docSentiment = response.docSentiment;
-            console.log('article.docSentiment: ', article.docSentiment);
             article.docSentiment.score = Number(article.docSentiment.score);
             docSentimentSum += Number(article.docSentiment.score);
             docSentimentArr.push(Number(article.docSentiment.score))
@@ -86,7 +84,6 @@ exports.getArticle = function(req, res) {
           article.entitySentiment = [];
           article.entities = [];
           article.scores = [];
-          console.log('response: ', response);
 
           response.entities.forEach(function(el){
             if (el.sentiment) {
@@ -105,7 +102,10 @@ exports.getArticle = function(req, res) {
               }
               dataObj.sentimentData[entity].push(sentimentObj);
               // end of data cleaning
-              obj[entity] = Number(score);
+              obj['entity'] = entity;
+              obj['score'] = Number(score);
+              obj['frequency'] = el.count;
+              obj['type'] = el.sentiment.type;
               article.entitySentiment.push(obj);
               article.entities.push(entity);
               article.scores.push(Number(score));
@@ -171,6 +171,7 @@ exports.getArticle = function(req, res) {
         sourceObj['label'] = el.href;
         sourceObj['id'] = counter
         sourceObj['cleanLabel'] = getHostName(el.href);
+        el['cleanLabel'] = getHostName(el.href);
         if (el.docSentiment) {
           if (el.docSentiment.score === null) {
             el.docSentiment.score = 0;
@@ -190,6 +191,16 @@ exports.getArticle = function(req, res) {
           el.cleanLabel = el.cleanLabel + ' ' + hash[el.cleanLabel].length;
         }
       });
+      var hash2 = {};
+      cleanData.forEach(function(el){
+        if (hash2[el.cleanLabel] === undefined) {
+          hash2[el.cleanLabel] = [];
+        }
+        hash2[el.cleanLabel].push(el.label);
+        if (hash2[el.cleanLabel].length > 1) {
+          el.cleanLabel = el.cleanLabel + ' ' + hash2[el.cleanLabel].length;
+        }
+      })
       callback();
     };
 

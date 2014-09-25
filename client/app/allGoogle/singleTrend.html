@@ -23,7 +23,7 @@
         </h1>
       </div>
       <div class="col-md-6">
-        <div style="height: 180px"class="well well-lg">
+        <div style="height: 195px"class="well well-lg">
           <div class="row">
             <div class="col-sm-12">
               <ul>
@@ -53,9 +53,10 @@
       <div class="panel">
         <div class="panel-body">
           <tabset>
-            <tab heading="Articles" ng-click="clickArticle()"></tab>
+            <tab heading="Top Articles" ng-click="clickArticle()"></tab>
             <tab heading="Overall Sentiment" ng-click="clickOverall()"></tab>
-            <tab heading="Sentiment Breakdown" ng-click="clickAnalysis()"></tab>
+            <tab heading="Sentiment Breakdown 1" ng-click="clickAnalysis()"></tab>
+            <tab heading="Sentiment Breakdown 2" ng-click="clickAnalysis2()"></tab>
             <tab ng-if="newsData.wiki[0].context!=='Not Available'" heading="More Info" ng-click="clickContext()"></tab>
           </tabset>
         </div>
@@ -112,7 +113,8 @@
               <div class="form-group col-md-3">
                 <h4>News Sources</h4>
     <!--             <p>(listed alphabetically)</p> -->
-                <button ng-click="selectAllSources()" class="btn btn-danger">{{selectSourcesText}}</button>
+<!--                 <button ng-click="selectAllSources()" class="btn selectAll">{{selectSourcesText}}</button> -->
+                <a ng-click="selectAllSources()">{{selectSourcesText}}</a>
                 <p ng-if="sourceChosen === 0">Please select at least one source.</p>
                 <div ng-repeat="source in newsData.sources | orderBy: 'cleanLabel'">
   <!--                 <button ng-click="clicked(source)" ng-model="source.selected">{{source.cleanLabel}}</button> -->
@@ -123,7 +125,8 @@
               </div><!-- form-group -->
               <div class="form-group col-md-3">
                 <h4>Sentiment Types</h4>
-                <button ng-click="selectAllTypes()" class="btn btn-danger">{{selectTypesText}}</button>
+ <!--                <button ng-click="selectAllTypes()" class="btn selectAll">{{selectTypesText}}</button> -->
+                <a ng-click="selectAllTypes()">{{selectTypesText}}</a>
                 <p ng-if="typeChosen === 0">Please select at least one type.</p>
                 <div ng-repeat="item in newsData.sentimentTypes">
                   <label class="checkbox-inline">
@@ -145,14 +148,69 @@
                 showLegend="true"
                 transitionDuration="1000"
                 xaxislabel="Sentiment Score"
+                tooltipxcontent="true"
+                tooltipycontent="true"
+                tooltip-x-content="tooltipXContentFunction()"
+                yaxistickformat="yAxisFormatFunction2()"
                 nodata="Please select at least one source and one sentiment type"
                 >
                 <svg id="chart" width="960" height="500"></svg>
             </nvd3-scatter-chart>
             <br></br>
             <hr>
-          </div><!-- displayAnalysis -->
 
+            </nvd3-scatter-chart>
+          </div><!-- displayAnalysis -->
+          <div ng-if="displayAnalysis2">
+            <div class="row">
+              <div class="form-group col-md-3">
+                <h4>Entities</h4>
+                <a ng-click="selectAllEntities()">{{selectEntitiesText}}</a>
+                <p ng-if="entityChosen === 0">Please select at least one entity.</p>
+                <div ng-repeat="entity in newsData.entities | reverse">
+                  <label class="checkbox-inline">
+                  <input type="checkbox" id="entity-{{$index}}" value="{{entity.label}}" ng-click="clicked2(entity)" ng-model="entity.selected2">{{entity.label}}
+                  </label>
+                </div> <!-- ng-repeat -->
+              </div><!-- form-group -->
+              <div class="form-group col-md-3">
+                <h4>Sentiment Types</h4>
+                <a ng-click="selectAllTypes2()">{{selectTypesText2}}</a>
+                <p ng-if="typeChosen2 === 0">Please select at least one sentiment type.</p>
+                <div ng-repeat="item in newsData.sentimentTypes">
+                  <label class="checkbox-inline">
+                  <input type="checkbox" id="type-{{$index}}" value="item.type" ng-click="clicked2(item)" ng-model="item.selected2">{{item.type}}
+                  </label>
+                </div> <!-- ng-repeat -->
+              </div> <!-- form-group -->
+            </div> <!-- row -->
+
+            <br></br>
+
+            <nvd3-scatter-chart
+                data="newsData.d3_2"
+                id="sentimentComparisonBySroup"
+                width="1000"
+                height="400"
+                interactive="true"
+                tooltips="true"
+                showYaxis="false"
+                forceX="[-1,1]"
+                showLegend="true"
+                transitionDuration="1000"
+                xaxislabel="Sentiment Score"
+                tooltipxcontent="true"
+                tooltipycontent="true"
+                tooltip-content="tooltipContentFunction2()"
+                yaxistickformat="yAxisFormatFunction()"
+                nodata="No data available"
+                >
+                <svg id="chart" width="960" height="1000"></svg>
+            </nvd3-scatter-chart>
+            <br></br>
+            <hr>
+
+          </div><!-- displayanalysis2 -->
 <!--             <h2>Selected Articles</h2>
             <br></br>
             <div ng-repeat="outlet in newsData.cleanData | limitTo:10 | filter: {selected: 'true'} | orderBy: 'href' ">

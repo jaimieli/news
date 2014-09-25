@@ -83,7 +83,7 @@ footer {
   height:40px;
 }
 
-a,a:hover {
+a,a:hover{
   color:#223344;
   text-decoration:none;
 }
@@ -241,4 +241,12 @@ div#transitionContainer{
 
 div#transitionFooter{
   background-color: #111166;
+}
+
+.btn.selectAll, .btn.selectAll{
+  background-color: white;
+  border-radius: 0px;
+  border: none;
+  margin-left: -10px;
+  outline: none;
 }
