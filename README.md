@@ -1,4 +1,4 @@
-News360
+News 360
 ======
 
 With News 360, users can discover trending topics, browse top news article, and see how topics are being portrayed across outlets.
